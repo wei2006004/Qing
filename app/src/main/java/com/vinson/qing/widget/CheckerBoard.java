@@ -16,6 +16,15 @@ public class CheckerBoard extends View {
     private final static int BROAD_PADDING = 30;
     private final static int ANNOTATION_PADDING = 8;
 
+    private final static int BROAD_X_MAX_INDEX = 8;
+    private final static int BROAD_Y_MAX_INDEX = 9;
+
+    private int boardWidth;
+    private int boardHeight;
+
+    private int startx;
+    private int starty;
+
     private Paint mLinePaint;
 
     public CheckerBoard(Context context) {
@@ -49,35 +58,38 @@ public class CheckerBoard extends View {
         int right = getPaddingRight() + BROAD_PADDING;
         int bottom = getPaddingBottom() + BROAD_PADDING;
 
-        drawBoard(canvas, left, top, width - right, height - bottom);
+        startx = left;
+        starty = top;
+        boardWidth = width - right - startx;
+        boardHeight = height - bottom - starty;
+
+        drawBoard(canvas);
     }
 
-    private void drawBoard(Canvas canvas, int startx, int starty, int endx, int endy) {
-        drawBoardLines(canvas, startx, starty, endx, endy);
-        drawAnnotations(canvas, startx, starty, endx, endy);
+    private void drawBoard(Canvas canvas) {
+        drawBoardLines(canvas);
+        drawAnnotations(canvas);
     }
 
-    private void drawAnnotations(Canvas canvas, int startx, int starty, int endx, int endy) {
-        drawAnnotation(canvas, 1, 2, startx, starty, endx, endy);
-        drawAnnotation(canvas, 1, 7, startx, starty, endx, endy);
-        drawAnnotation(canvas, 7, 2, startx, starty, endx, endy);
-        drawAnnotation(canvas, 7, 7, startx, starty, endx, endy);
+    private void drawAnnotations(Canvas canvas) {
+        drawAnnotation(canvas, 1, 2);
+        drawAnnotation(canvas, 1, 7);
+        drawAnnotation(canvas, 7, 2);
+        drawAnnotation(canvas, 7, 7);
 
         for (int i = 0; i < 9; i += 2) {
-            drawAnnotation(canvas, i, 3, startx, starty, endx, endy);
+            drawAnnotation(canvas, i, 3);
         }
 
         for (int i = 0; i < 9; i += 2) {
-            drawAnnotation(canvas, i, 6, startx, starty, endx, endy);
+            drawAnnotation(canvas, i, 6);
         }
     }
 
-    private void drawAnnotation(Canvas canvas, int x, int y, int startx, int starty, int endx, int endy) {
-        int width = endx - startx;
-        int height = endy - starty;
-        int centerx = (int) (x * width / 8.0) + startx;
-        int centery = (int) (y * height / 9.0) + starty;
-        int length = (int) (width / 8.0 * 0.4);
+    private void drawAnnotation(Canvas canvas, int x, int y) {
+        int centerx = getBoardXByIndex(x) + startx;
+        int centery = getBoardYByIndex(y) + starty;
+        int length = (int) (boardWidth / 8.0 * 0.4);
         int padding = ANNOTATION_PADDING;
 
         if (x == 0) {
@@ -106,31 +118,53 @@ public class CheckerBoard extends View {
         drawXLine(canvas, padding, padding, padding + length, centerx, centery);
     }
 
-    private void drawBoardLines(Canvas canvas, int startx, int starty, int endx, int endy) {
-        int width = endx - startx;
-        int height = endy - starty;
-
-        for (int i = 0; i < 10; i++) {
-            drawXLine(canvas, (int) (i * height / 9.0), 0, width, startx, starty);
+    private void drawBoardLines(Canvas canvas) {
+        for (int i = 0; i <= BROAD_Y_MAX_INDEX; i++) {
+            drawBoardXLine(canvas, i, 0, BROAD_X_MAX_INDEX);
         }
 
-        drawYLine(canvas, 0, 0, height, startx, starty);
-        drawYLine(canvas, width, 0, height, startx, starty);
+        drawBoardYLine(canvas, 0, 0, BROAD_Y_MAX_INDEX);
+        drawBoardYLine(canvas, BROAD_X_MAX_INDEX, 0, BROAD_Y_MAX_INDEX);
 
-        for (int i = 1; i < 8; i++) {
-            drawYLine(canvas, (int) (i * width / 8.0), 0, (int) (height / 9.0 * 4), startx, starty);
+        for (int i = 1; i <= BROAD_X_MAX_INDEX - 1; i++) {
+            drawBoardYLine(canvas, i, 0, 4);
         }
 
-        for (int i = 1; i < 8; i++) {
-            drawYLine(canvas, (int) (i * width / 8.0), (int) (height / 9.0 * 5), height, startx, starty);
+        for (int i = 1; i <= BROAD_X_MAX_INDEX - 1; i++) {
+            drawBoardYLine(canvas, i, 5, BROAD_Y_MAX_INDEX);
         }
 
         // 斜线
-        drawLine(canvas, (int) (3 * width / 8.0), 0, (int) (5 * width / 8.0), (int) (height / 9.0 * 2), startx, starty);
-        drawLine(canvas, (int) (3 * width / 8.0), (int) (height / 9.0 * 2), (int) (5 * width / 8.0), 0, startx, starty);
+        drawBoardLine(canvas, 3, 0, 5, 2);
+        drawBoardLine(canvas, 3, 2, 5, 0);
 
-        drawLine(canvas, (int) (3 * width / 8.0), height, (int) (5 * width / 8.0), (int) (height / 9.0 * 7), startx, starty);
-        drawLine(canvas, (int) (3 * width / 8.0), (int) (height / 9.0 * 7), (int) (5 * width / 8.0), height, startx, starty);
+        drawBoardLine(canvas, 3, BROAD_Y_MAX_INDEX, 5, 7);
+        drawBoardLine(canvas, 3, 7, 5, BROAD_Y_MAX_INDEX);
+    }
+
+    private void drawBoardXLine(Canvas canvas, int y, int formX, int toX) {
+        drawBoardLine(canvas, formX, y, toX, y);
+    }
+
+    private void drawBoardYLine(Canvas canvas, int x, int formY, int toY) {
+        drawBoardLine(canvas, x, formY, x, toY);
+    }
+
+    private void drawBoardLine(Canvas canvas, int fromx, int formY, int tox, int toY) {
+        drawLine(canvas,
+                getBoardXByIndex(fromx),
+                getBoardYByIndex(formY),
+                getBoardXByIndex(tox),
+                getBoardYByIndex(toY),
+                startx, starty);
+    }
+
+    private int getBoardXByIndex(int index) {
+        return (int) (index * boardWidth / (float) BROAD_X_MAX_INDEX);
+    }
+
+    private int getBoardYByIndex(int index) {
+        return (int) (index * boardHeight / (float) BROAD_Y_MAX_INDEX);
     }
 
     private void drawXLine(Canvas canvas, int y, int formX, int toX, int tX, int tY) {
@@ -142,9 +176,6 @@ public class CheckerBoard extends View {
     }
 
     private void drawLine(Canvas canvas, int fromx, int formY, int tox, int toY, int tX, int tY) {
-        canvas.save();
-        canvas.translate(tX, tY);
-        canvas.drawLine(fromx, formY, tox, toY, mLinePaint);
-        canvas.restore();
+        canvas.drawLine(fromx + tX, formY + tY, tox + tX, toY + tY, mLinePaint);
     }
 }
