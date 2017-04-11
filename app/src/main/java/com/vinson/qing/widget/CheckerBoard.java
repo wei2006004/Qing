@@ -18,7 +18,6 @@ import com.vinson.qing.utils.DimenUtils;
 
 public class CheckerBoard extends ViewGroup {
     private final static int BROAD_PADDING = 10;
-    private final static int ANNOTATION_PADDING = 3;
 
     private final static int BROAD_X_MAX_INDEX = 8;
     private final static int BROAD_Y_MAX_INDEX = 9;
@@ -28,7 +27,6 @@ public class CheckerBoard extends ViewGroup {
 
     private int boardWidth;
     private int boardHeight;
-    private int annotationPadding;
 
     private int startx;
     private int starty;
@@ -108,7 +106,6 @@ public class CheckerBoard extends ViewGroup {
         starty = top;
         boardWidth = width - right - startx;
         boardHeight = height - bottom - starty;
-        annotationPadding = DimenUtils.dp2px(ANNOTATION_PADDING);
     }
 
     private void drawBoard(Canvas canvas) {
@@ -134,8 +131,8 @@ public class CheckerBoard extends ViewGroup {
     private void drawAnnotation(Canvas canvas, int x, int y) {
         int centerx = getBoardXByIndex(x) + startx;
         int centery = getBoardYByIndex(y) + starty;
-        int length = (int) (boardWidth / 8.0 * 0.4);
-        int padding = annotationPadding;
+        int length = (int) (boardWidth / 8.0 * 0.35);
+        int padding = (int) (boardWidth / 8.0 * 0.1);
 
         if (x == 0) {
             drawYLine(canvas, padding, -padding, -padding - length, centerx, centery);
