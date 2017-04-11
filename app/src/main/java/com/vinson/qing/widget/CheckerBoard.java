@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.vinson.qing.R;
 import com.vinson.qing.bean.Chess;
 import com.vinson.qing.bean.ChessInfo;
+import com.vinson.qing.utils.ChessUtils;
 import com.vinson.qing.utils.DimenUtils;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class CheckerBoard extends ViewGroup {
     private boolean fixScale;
 
     private BoardDrawer boardDrawer;
-    private List<ChessInfo> chessInfos = new ArrayList<>();
+    private List<ChessInfo> chessInfos;
 
     public CheckerBoard(Context context) {
         this(context, null);
@@ -55,7 +56,16 @@ public class CheckerBoard extends ViewGroup {
             if (array.getIndex(i) == R.styleable.CheckerBoard_fixScale) {
                 fixScale = array.getBoolean(i, false);
             }
+            if (array.getIndex(i) == R.styleable.CheckerBoard_initChess) {
+                boolean initChess = array.getBoolean(i, false);
+                if (initChess) {
+                    chessInfos = new ArrayList<>(ChessUtils.getInitChessList());
+                } else {
+                    chessInfos = new ArrayList<>();
+                }
+            }
         }
+        array.recycle();
 
         boardDrawer = new BoardDrawer();
         setWillNotDraw(false);

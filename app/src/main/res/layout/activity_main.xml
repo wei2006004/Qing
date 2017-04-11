@@ -9,6 +9,7 @@
         android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:fixScale="true"/>
+        app:fixScale="true"
+        app:initChess="true"/>
 
 </RelativeLayout>

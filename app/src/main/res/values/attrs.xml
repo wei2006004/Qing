@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="fixScale" format="boolean"/>
+    <attr name="initChess" format="boolean"/>
 
     <declare-styleable name="CheckerBoard">
         <attr name="fixScale"/>
+        <attr name="initChess"/>
     </declare-styleable>
 </resources>
