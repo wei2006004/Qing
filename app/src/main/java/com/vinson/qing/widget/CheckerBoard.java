@@ -39,7 +39,6 @@ public class CheckerBoard extends ViewGroup {
     private boolean fixScale;
 
     private BoardDrawer boardDrawer;
-    private List<ChessInfo> chessInfos;
 
     public CheckerBoard(Context context) {
         this(context, null);
@@ -52,6 +51,8 @@ public class CheckerBoard extends ViewGroup {
     public CheckerBoard(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray array = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CheckerBoard, defStyleAttr, 0);
+
+        List<ChessInfo> chessInfos = new ArrayList<>();
         for (int i = 0; i < array.getIndexCount(); i++) {
             if (array.getIndex(i) == R.styleable.CheckerBoard_fixScale) {
                 fixScale = array.getBoolean(i, false);
@@ -60,8 +61,6 @@ public class CheckerBoard extends ViewGroup {
                 boolean initChess = array.getBoolean(i, false);
                 if (initChess) {
                     chessInfos = new ArrayList<>(ChessUtils.getInitChessList());
-                } else {
-                    chessInfos = new ArrayList<>();
                 }
             }
         }
@@ -69,10 +68,12 @@ public class CheckerBoard extends ViewGroup {
 
         boardDrawer = new BoardDrawer();
         setWillNotDraw(false);
+
+        setChessList(chessInfos);
     }
 
     public void addChess(ChessInfo info) {
-        chessInfos.add(info);
+        addView(new ChessView(getContext(), info));
     }
 
     public void addChess(int x, int y, Chess chess) {
@@ -80,8 +81,9 @@ public class CheckerBoard extends ViewGroup {
     }
 
     public void setChessList(List<ChessInfo> list) {
-        chessInfos.clear();
-        chessInfos.addAll(list);
+        for (ChessInfo info : list) {
+            addChess(info);
+        }
     }
 
     @Override
@@ -105,6 +107,11 @@ public class CheckerBoard extends ViewGroup {
         if (fixScale) {
             sizeHeight = (int) (sizeWidth / (float) BROAD_X_MAX_INDEX * BROAD_Y_MAX_INDEX);
         }
+        float eachW = sizeWidth / (float) BROAD_X_MAX_INDEX;
+        float eachH = sizeHeight / (float) BROAD_Y_MAX_INDEX;
+        int childWidth = (int)((eachH > eachW ? eachW : eachH) * 0.8);
+        measureChildren(MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY));
         setMeasuredDimension(sizeWidth, sizeHeight);
     }
 
