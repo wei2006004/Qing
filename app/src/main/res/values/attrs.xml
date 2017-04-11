@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="fixScale" format="boolean"/>
+
+    <declare-styleable name="CheckerBoard">
+        <attr name="fixScale"/>
+    </declare-styleable>
+</resources>

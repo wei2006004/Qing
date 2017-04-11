@@ -1,12 +1,14 @@
 package com.vinson.qing.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
+import com.vinson.qing.R;
 import com.vinson.qing.utils.DimenUtils;
 
 /**
@@ -21,8 +23,8 @@ public class CheckerBoard extends ViewGroup {
     private final static int BROAD_X_MAX_INDEX = 8;
     private final static int BROAD_Y_MAX_INDEX = 9;
 
-    private final static int MIN_WIDTH = 300;
-    private final static int MIN_HEIGHT = 300;
+    private final static int MIN_WIDTH = 240;
+    private final static int MIN_HEIGHT = 270;
 
     private int boardWidth;
     private int boardHeight;
@@ -30,6 +32,8 @@ public class CheckerBoard extends ViewGroup {
 
     private int startx;
     private int starty;
+
+    private boolean fixScale;
 
     private Paint mLinePaint;
 
@@ -43,6 +47,12 @@ public class CheckerBoard extends ViewGroup {
 
     public CheckerBoard(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        TypedArray array = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CheckerBoard, defStyleAttr, 0);
+        for (int i = 0 ;i< array.getIndexCount();i++){
+            if (array.getIndex(i) == R.styleable.CheckerBoard_fixScale) {
+                fixScale = array.getBoolean(i, false);
+            }
+        }
         initPaint();
         setWillNotDraw(false);
     }
@@ -70,6 +80,9 @@ public class CheckerBoard extends ViewGroup {
         }
         if (heightMode == MeasureSpec.AT_MOST) {
             sizeHeight = DimenUtils.dp2px(MIN_HEIGHT);
+        }
+        if (fixScale) {
+            sizeHeight = (int) (sizeWidth / (float) BROAD_X_MAX_INDEX * BROAD_Y_MAX_INDEX);
         }
         setMeasuredDimension(sizeWidth, sizeHeight);
     }
