@@ -5,22 +5,28 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.ViewGroup;
+
+import com.vinson.qing.utils.DimenUtils;
 
 /**
  * Created by Vinson on 2017/4/11.
  * e-mail: wei2006004@foxmail.com
  */
 
-public class CheckerBoard extends View {
-    private final static int BROAD_PADDING = 30;
-    private final static int ANNOTATION_PADDING = 8;
+public class CheckerBoard extends ViewGroup {
+    private final static int BROAD_PADDING = 10;
+    private final static int ANNOTATION_PADDING = 3;
 
     private final static int BROAD_X_MAX_INDEX = 8;
     private final static int BROAD_Y_MAX_INDEX = 9;
 
+    private final static int MIN_WIDTH = 300;
+    private final static int MIN_HEIGHT = 300;
+
     private int boardWidth;
     private int boardHeight;
+    private int annotationPadding;
 
     private int startx;
     private int starty;
@@ -38,6 +44,12 @@ public class CheckerBoard extends View {
     public CheckerBoard(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initPaint();
+        setWillNotDraw(false);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+
     }
 
     private void initPaint() {
@@ -47,23 +59,43 @@ public class CheckerBoard extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
+        int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
 
+        if (widthMode == MeasureSpec.AT_MOST) {
+            sizeWidth = DimenUtils.dp2px(MIN_WIDTH);
+        }
+        if (heightMode == MeasureSpec.AT_MOST) {
+            sizeHeight = DimenUtils.dp2px(MIN_HEIGHT);
+        }
+        setMeasuredDimension(sizeWidth, sizeHeight);
+    }
+
+    @Override
+    public void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        initBoardParam();
+        drawBoard(canvas);
+    }
+
+    private void initBoardParam() {
         int width = getWidth();
         int height = getHeight();
 
-        int top = getPaddingTop() + BROAD_PADDING;
-        int left = getPaddingLeft() + BROAD_PADDING;
-        int right = getPaddingRight() + BROAD_PADDING;
-        int bottom = getPaddingBottom() + BROAD_PADDING;
+        int padding = DimenUtils.dp2px(BROAD_PADDING);
+        int top = getPaddingTop() + padding;
+        int left = getPaddingLeft() + padding;
+        int right = getPaddingRight() + padding;
+        int bottom = getPaddingBottom() + padding;
 
         startx = left;
         starty = top;
         boardWidth = width - right - startx;
         boardHeight = height - bottom - starty;
-
-        drawBoard(canvas);
+        annotationPadding = DimenUtils.dp2px(ANNOTATION_PADDING);
     }
 
     private void drawBoard(Canvas canvas) {
@@ -90,7 +122,7 @@ public class CheckerBoard extends View {
         int centerx = getBoardXByIndex(x) + startx;
         int centery = getBoardYByIndex(y) + starty;
         int length = (int) (boardWidth / 8.0 * 0.4);
-        int padding = ANNOTATION_PADDING;
+        int padding = annotationPadding;
 
         if (x == 0) {
             drawYLine(canvas, padding, -padding, -padding - length, centerx, centery);
