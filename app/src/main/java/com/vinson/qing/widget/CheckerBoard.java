@@ -41,6 +41,7 @@ public class CheckerBoard extends ViewGroup {
     private int starty;
 
     private int childWidth;
+    private int boardPadding;
 
     private boolean fixScale;
 
@@ -82,8 +83,6 @@ public class CheckerBoard extends ViewGroup {
 
     private void initDragger() {
         dragHelper = ViewDragHelper.create(this, 1.0f, new ViewDragHelper.Callback() {
-            int currentLeft;
-            int currentTop;
 
             @Override
             public boolean tryCaptureView(View child, int pointerId) {
@@ -113,18 +112,11 @@ public class CheckerBoard extends ViewGroup {
             }
 
             @Override
-            public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
-                currentLeft = left;
-                currentTop = top;
-            }
-
-            @Override
             public void onViewReleased(View releasedChild, float xvel, float yvel) {
                 if (releasedChild instanceof ChessView) {
                     ChessInfo info = ((ChessView) releasedChild).getChessInfo();
-                    int playx = computeBoardXByPos(currentLeft + childWidth / 2);
-                    int playy = computeBoardYByPos(currentTop + childWidth / 2);
-
+                    int playx = computeBoardXByPos((int) releasedChild.getX() + childWidth / 2);
+                    int playy = computeBoardYByPos((int) releasedChild.getY() + childWidth / 2);
                     int rx = info.x;
                     int ry = info.y;
                     if (ChessPlayer.playVerify(info.chess, info.x, info.y, playx, playy)) {
@@ -223,7 +215,7 @@ public class CheckerBoard extends ViewGroup {
     }
 
     private void initBoardParam(int width, int height) {
-        int boardPadding = DimenUtils.dp2px(BROAD_PADDING);
+        boardPadding = DimenUtils.dp2px(BROAD_PADDING);
         int rwidth = width - 2 * boardPadding - getPaddingLeft() - getPaddingRight();
         int rheight = height - 2 * boardPadding - getPaddingTop() - getPaddingBottom();
         float eachW = rwidth / (float) (BROAD_X_MAX_INDEX + 1);
@@ -246,11 +238,11 @@ public class CheckerBoard extends ViewGroup {
     }
 
     private int computeBoardXByPos(int pos) {
-        return (int) Math.floor((pos - startx) / (float) childWidth);
+        return Math.round((pos - startx) / ((float) boardWidth / BROAD_X_MAX_INDEX));
     }
 
     private int computeBoardYByPos(int pos) {
-        return (int) Math.floor((pos - starty) / (float) childWidth);
+        return Math.round((pos - starty) / ((float) boardHeight / BROAD_Y_MAX_INDEX));
     }
 
     private int getBoardXByIndex(int index) {
