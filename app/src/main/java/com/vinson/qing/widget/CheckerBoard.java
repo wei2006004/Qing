@@ -26,7 +26,7 @@ import static com.vinson.qing.widget.BoardDrawer.BROAD_Y_MAX_INDEX;
 
 public class CheckerBoard extends ViewGroup {
 
-    private final static int BROAD_PADDING = 10;
+    private final static int BROAD_PADDING = 5;
 
     private final static int MIN_WIDTH = 240;
     private final static int MIN_HEIGHT = 270;
@@ -36,6 +36,8 @@ public class CheckerBoard extends ViewGroup {
 
     private int startx;
     private int starty;
+
+    private int childWidth;
 
     private boolean fixScale;
 
@@ -74,7 +76,8 @@ public class CheckerBoard extends ViewGroup {
     }
 
     public void addChess(ChessInfo info) {
-        addView(new ChessView(getContext(), info));
+        ViewGroup.LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        addView(new ChessView(getContext(), info), layoutParams);
     }
 
     public void addChess(int x, int y, Chess chess) {
@@ -122,7 +125,7 @@ public class CheckerBoard extends ViewGroup {
         }
         float eachW = sizeWidth / (float) BROAD_X_MAX_INDEX;
         float eachH = sizeHeight / (float) BROAD_Y_MAX_INDEX;
-        int childWidth = (int) ((eachH > eachW ? eachW : eachH) * 0.8);
+        childWidth = (int) ((eachH > eachW ? eachW : eachH) * 0.9);
         measureChildren(MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY));
         setMeasuredDimension(sizeWidth, sizeHeight);
@@ -138,7 +141,7 @@ public class CheckerBoard extends ViewGroup {
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
 
-        int padding = DimenUtils.dp2px(BROAD_PADDING);
+        int padding = DimenUtils.dp2px(BROAD_PADDING) + childWidth / 2;
         int top = getPaddingTop() + padding;
         int left = getPaddingLeft() + padding;
         int right = getPaddingRight() + padding;
