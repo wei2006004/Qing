@@ -19,14 +19,24 @@ public class ChessView extends TextView {
 
     public ChessView(Context context, ChessInfo chessInfo) {
         super(context);
+
+        setGravity(Gravity.CENTER);
+        setChessInfo(chessInfo);
+    }
+
+    public void setChessInfo(ChessInfo chessInfo) {
+        if (this.chessInfo != null && this.chessInfo.chess == chessInfo.chess) {  // 当相同棋子时不更新界面
+            this.chessInfo = chessInfo;
+            return;
+        }
+
         this.chessInfo = chessInfo;
         setText(chessInfo.chess.getText());
-        setGravity(Gravity.CENTER);
         if (chessInfo.chess.getType() == Chess.TYPE_RED) {
-            setTextColor(context.getResources().getColor(R.color.chess_red));
+            setTextColor(getContext().getResources().getColor(R.color.chess_red));
             setBackgroundResource(R.drawable.bg_chess_red);
         } else {
-            setTextColor(context.getResources().getColor(R.color.chess_green));
+            setTextColor(getContext().getResources().getColor(R.color.chess_green));
             setBackgroundResource(R.drawable.bg_chess_green);
         }
     }

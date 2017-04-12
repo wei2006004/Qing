@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.vinson.qing.ChessPlayer;
 import com.vinson.qing.R;
 import com.vinson.qing.bean.Chess;
 import com.vinson.qing.bean.ChessInfo;
@@ -81,6 +82,9 @@ public class CheckerBoard extends ViewGroup {
 
     private void initDragger() {
         dragHelper = ViewDragHelper.create(this, 1.0f, new ViewDragHelper.Callback() {
+            int currentLeft;
+            int currentTop;
+
             @Override
             public boolean tryCaptureView(View child, int pointerId) {
                 return child instanceof ChessView;
@@ -107,6 +111,32 @@ public class CheckerBoard extends ViewGroup {
                 }
                 return top;
             }
+
+            @Override
+            public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+                currentLeft = left;
+                currentTop = top;
+            }
+
+            @Override
+            public void onViewReleased(View releasedChild, float xvel, float yvel) {
+                if (releasedChild instanceof ChessView) {
+                    ChessInfo info = ((ChessView) releasedChild).getChessInfo();
+                    int playx = computeBoardXByPos(currentLeft + childWidth / 2);
+                    int playy = computeBoardYByPos(currentTop + childWidth / 2);
+
+                    int rx = info.x;
+                    int ry = info.y;
+                    if (ChessPlayer.playVerify(info.chess, info.x, info.y, playx, playy)) {
+                        rx = playx;
+                        ry = playy;
+                    }
+                    int centerx = getBoardXByIndex(rx);
+                    int centery = getBoardYByIndex(ry);
+                    dragHelper.settleCapturedViewAt(centerx - childWidth / 2, centery - childWidth / 2);
+                    invalidate();
+                }
+            }
         });
     }
 
@@ -119,6 +149,13 @@ public class CheckerBoard extends ViewGroup {
     public boolean onTouchEvent(MotionEvent event) {
         dragHelper.processTouchEvent(event);
         return true;
+    }
+
+    @Override
+    public void computeScroll() {
+        if (dragHelper.continueSettling(true)) {
+            invalidate();
+        }
     }
 
     public void addChess(ChessInfo info) {
@@ -173,7 +210,7 @@ public class CheckerBoard extends ViewGroup {
         initBoardParam(sizeWidth, sizeHeight);
 
         int childMeasureSpec = MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY);
-        for (int i = 0;i<getChildCount();i++) {
+        for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             child.measure(childMeasureSpec, childMeasureSpec);
         }
@@ -191,7 +228,7 @@ public class CheckerBoard extends ViewGroup {
         int rheight = height - 2 * boardPadding - getPaddingTop() - getPaddingBottom();
         float eachW = rwidth / (float) (BROAD_X_MAX_INDEX + 1);
         float eachH = rheight / (float) (BROAD_Y_MAX_INDEX + 1);
-        childWidth = (int) ((eachH > eachW ? eachW : eachH) * 0.85);
+        childWidth = (int) (Math.min(eachH, eachW) * 0.85);
 
         int padding = boardPadding + childWidth / 2;
         int top = getPaddingTop() + padding;
@@ -206,6 +243,14 @@ public class CheckerBoard extends ViewGroup {
         boardDrawer.starty = starty;
         boardDrawer.boardWidth = boardWidth;
         boardDrawer.boardHeight = boardHeight;
+    }
+
+    private int computeBoardXByPos(int pos) {
+        return (int) Math.floor((pos - startx) / (float) childWidth);
+    }
+
+    private int computeBoardYByPos(int pos) {
+        return (int) Math.floor((pos - starty) / (float) childWidth);
     }
 
     private int getBoardXByIndex(int index) {
