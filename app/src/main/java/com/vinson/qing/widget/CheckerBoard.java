@@ -28,14 +28,13 @@ import static com.vinson.qing.widget.BoardDrawer.BROAD_Y_MAX_INDEX;
 
 public class CheckerBoard extends ViewGroup {
 
-    private final static int BROAD_PADDING = 5;
+    private final static int BROAD_PADDING = 10;
 
     private final static int MIN_WIDTH = 240;
     private final static int MIN_HEIGHT = 270;
 
     private int boardWidth;
     private int boardHeight;
-    private int boardPadding;
 
     private int startx;
     private int starty;
@@ -78,7 +77,6 @@ public class CheckerBoard extends ViewGroup {
 
         setChessList(chessInfos);
         initDragger();
-        boardPadding = DimenUtils.dp2px(BROAD_PADDING);
     }
 
     private void initDragger() {
@@ -90,8 +88,8 @@ public class CheckerBoard extends ViewGroup {
 
             @Override
             public int clampViewPositionHorizontal(View child, int left, int dx) {
-                if (left < boardPadding + getPaddingLeft()) {
-                    return boardPadding + getPaddingLeft();
+                if (left < getPaddingLeft()) {
+                    return getPaddingLeft();
                 }
                 if (left + childWidth > getWidth() - getPaddingRight()) {
                     return getWidth() - childWidth - getPaddingRight();
@@ -101,8 +99,8 @@ public class CheckerBoard extends ViewGroup {
 
             @Override
             public int clampViewPositionVertical(View child, int top, int dy) {
-                if (top < boardPadding + getPaddingTop()) {
-                    return boardPadding + getPaddingTop();
+                if (top < getPaddingTop()) {
+                    return getPaddingTop();
                 }
                 if (top + childWidth > getHeight() - getPaddingBottom()) {
                     return getHeight() - childWidth - getPaddingBottom();
@@ -188,6 +186,7 @@ public class CheckerBoard extends ViewGroup {
     }
 
     private void initBoardParam(int width, int height) {
+        int boardPadding = DimenUtils.dp2px(BROAD_PADDING);
         int rwidth = width - 2 * boardPadding - getPaddingLeft() - getPaddingRight();
         int rheight = height - 2 * boardPadding - getPaddingTop() - getPaddingBottom();
         float eachW = rwidth / (float) (BROAD_X_MAX_INDEX + 1);

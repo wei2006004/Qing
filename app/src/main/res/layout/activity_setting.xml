@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <com.vinson.qing.widget.CheckerBoard
-        android:padding="10dp"
+        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:fixScale="true"
