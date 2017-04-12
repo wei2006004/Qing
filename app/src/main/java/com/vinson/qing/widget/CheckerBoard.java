@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.vinson.qing.R;
@@ -88,7 +89,19 @@ public class CheckerBoard extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
+        initBoardParam();
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            if (!(child instanceof ChessView)) {
+                throw new IllegalStateException("child must be chessveiw");
+            }
+            int width = child.getMeasuredWidth();
+            int height = child.getMeasuredHeight();
+            ChessInfo info = ((ChessView) child).getChessInfo();
+            int centerx = getBoardXByIndex(info.x);
+            int centery = getBoardYByIndex(info.y);
+            child.layout(centerx - width / 2, centery - height / 2, centerx + width / 2, centery + height / 2);
+        }
     }
 
     @Override
@@ -109,7 +122,7 @@ public class CheckerBoard extends ViewGroup {
         }
         float eachW = sizeWidth / (float) BROAD_X_MAX_INDEX;
         float eachH = sizeHeight / (float) BROAD_Y_MAX_INDEX;
-        int childWidth = (int)((eachH > eachW ? eachW : eachH) * 0.8);
+        int childWidth = (int) ((eachH > eachW ? eachW : eachH) * 0.8);
         measureChildren(MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY));
         setMeasuredDimension(sizeWidth, sizeHeight);
@@ -118,13 +131,12 @@ public class CheckerBoard extends ViewGroup {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        initBoardParam();
         boardDrawer.drawBoard(canvas);
     }
 
     private void initBoardParam() {
-        int width = getWidth();
-        int height = getHeight();
+        int width = getMeasuredWidth();
+        int height = getMeasuredHeight();
 
         int padding = DimenUtils.dp2px(BROAD_PADDING);
         int top = getPaddingTop() + padding;
@@ -144,10 +156,10 @@ public class CheckerBoard extends ViewGroup {
     }
 
     private int getBoardXByIndex(int index) {
-        return (int) (index * boardWidth / (float) BROAD_X_MAX_INDEX);
+        return (int) (index * boardWidth / (float) BROAD_X_MAX_INDEX) + startx;
     }
 
     private int getBoardYByIndex(int index) {
-        return (int) (index * boardHeight / (float) BROAD_Y_MAX_INDEX);
+        return (int) (index * boardHeight / (float) BROAD_Y_MAX_INDEX) + starty;
     }
 }
