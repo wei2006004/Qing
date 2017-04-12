@@ -3,7 +3,9 @@ package com.vinson.qing.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -33,6 +35,7 @@ public class CheckerBoard extends ViewGroup {
 
     private int boardWidth;
     private int boardHeight;
+    private int boardPadding;
 
     private int startx;
     private int starty;
@@ -42,6 +45,7 @@ public class CheckerBoard extends ViewGroup {
     private boolean fixScale;
 
     private BoardDrawer boardDrawer;
+    private ViewDragHelper dragHelper;
 
     public CheckerBoard(Context context) {
         this(context, null);
@@ -73,6 +77,50 @@ public class CheckerBoard extends ViewGroup {
         setWillNotDraw(false);
 
         setChessList(chessInfos);
+        initDragger();
+        boardPadding = DimenUtils.dp2px(BROAD_PADDING);
+    }
+
+    private void initDragger() {
+        dragHelper = ViewDragHelper.create(this, 1.0f, new ViewDragHelper.Callback() {
+            @Override
+            public boolean tryCaptureView(View child, int pointerId) {
+                return child instanceof ChessView;
+            }
+
+            @Override
+            public int clampViewPositionHorizontal(View child, int left, int dx) {
+                if (left < boardPadding + getPaddingLeft()) {
+                    return boardPadding + getPaddingLeft();
+                }
+                if (left + childWidth > getWidth() - getPaddingRight()) {
+                    return getWidth() - childWidth - getPaddingRight();
+                }
+                return left;
+            }
+
+            @Override
+            public int clampViewPositionVertical(View child, int top, int dy) {
+                if (top < boardPadding + getPaddingTop()) {
+                    return boardPadding + getPaddingTop();
+                }
+                if (top + childWidth > getHeight() - getPaddingBottom()) {
+                    return getHeight() - childWidth - getPaddingBottom();
+                }
+                return top;
+            }
+        });
+    }
+
+    @Override
+    public boolean onInterceptHoverEvent(MotionEvent event) {
+        return dragHelper.shouldInterceptTouchEvent(event);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        dragHelper.processTouchEvent(event);
+        return true;
     }
 
     public void addChess(ChessInfo info) {
@@ -92,7 +140,6 @@ public class CheckerBoard extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        initBoardParam();
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             if (!(child instanceof ChessView)) {
@@ -123,12 +170,15 @@ public class CheckerBoard extends ViewGroup {
         if (fixScale) {
             sizeHeight = (int) (sizeWidth / (float) BROAD_X_MAX_INDEX * BROAD_Y_MAX_INDEX);
         }
-        float eachW = sizeWidth / (float) BROAD_X_MAX_INDEX;
-        float eachH = sizeHeight / (float) BROAD_Y_MAX_INDEX;
-        childWidth = (int) ((eachH > eachW ? eachW : eachH) * 0.9);
-        measureChildren(MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY));
+
         setMeasuredDimension(sizeWidth, sizeHeight);
+        initBoardParam(sizeWidth, sizeHeight);
+
+        int childMeasureSpec = MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY);
+        for (int i = 0;i<getChildCount();i++) {
+            View child = getChildAt(i);
+            child.measure(childMeasureSpec, childMeasureSpec);
+        }
     }
 
     @Override
@@ -137,20 +187,21 @@ public class CheckerBoard extends ViewGroup {
         boardDrawer.drawBoard(canvas);
     }
 
-    private void initBoardParam() {
-        int width = getMeasuredWidth();
-        int height = getMeasuredHeight();
+    private void initBoardParam(int width, int height) {
+        int rwidth = width - 2 * boardPadding - getPaddingLeft() - getPaddingRight();
+        int rheight = height - 2 * boardPadding - getPaddingTop() - getPaddingBottom();
+        float eachW = rwidth / (float) (BROAD_X_MAX_INDEX + 1);
+        float eachH = rheight / (float) (BROAD_Y_MAX_INDEX + 1);
+        childWidth = (int) ((eachH > eachW ? eachW : eachH) * 0.85);
 
-        int padding = DimenUtils.dp2px(BROAD_PADDING) + childWidth / 2;
+        int padding = boardPadding + childWidth / 2;
         int top = getPaddingTop() + padding;
         int left = getPaddingLeft() + padding;
-        int right = getPaddingRight() + padding;
-        int bottom = getPaddingBottom() + padding;
 
         startx = left;
         starty = top;
-        boardWidth = width - right - startx;
-        boardHeight = height - bottom - starty;
+        boardWidth = rwidth - childWidth;
+        boardHeight = rheight - childWidth;
 
         boardDrawer.startx = startx;
         boardDrawer.starty = starty;
