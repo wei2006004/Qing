@@ -1,5 +1,6 @@
 package com.vinson.qing.verify;
 
+import com.vinson.qing.bean.Chess;
 import com.vinson.qing.play.BoardStatus;
 
 /**
@@ -14,6 +15,25 @@ public class BingVerify extends ChessVerify {
 
     @Override
     public boolean playVerify(BoardStatus status, int fromx, int fromy, int tox, int toy) {
+        if (status.hasChess(tox, toy)) {
+            return false;
+        }
+        if (getType() == Chess.TYPE_GREEN) {
+            if (Math.abs(fromx + fromy - tox - toy) == 1 && fromy <= toy) {
+                if (fromy <= 4 && fromx != tox) {
+                    return false;
+                }
+                return true;
+            }
+        } else {
+            if (Math.abs(fromx + fromy - tox - toy) == 1 && fromy >= toy) {
+                if (fromy >= 5 && fromx != tox) {
+                    return false;
+                }
+                return true;
+            }
+        }
+
         return false;
     }
 }
