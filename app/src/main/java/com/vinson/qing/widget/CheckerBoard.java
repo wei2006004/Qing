@@ -126,6 +126,9 @@ public class CheckerBoard extends ViewGroup {
                     if (ChessPlayer.playVerify(boardStatus, info.chess, info.x, info.y, playx, playy)) {
                         rx = playx;
                         ry = playy;
+                        ((ChessView) releasedChild).setChessInfo(new ChessInfo(rx, ry, info.chess));
+                        boardStatus.setChess(info.chess, rx, ry);
+                        boardStatus.removeChess(info.x, info.y);
                     }
                     int centerx = getBoardXByIndex(rx);
                     int centery = getBoardYByIndex(ry);

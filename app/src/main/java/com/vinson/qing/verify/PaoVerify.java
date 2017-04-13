@@ -14,6 +14,12 @@ public class PaoVerify extends ChessVerify {
 
     @Override
     public boolean playVerify(BoardStatus status, int fromx, int fromy, int tox, int toy) {
-        return false;
+        if (fromx != tox && fromy != toy) {
+            return false;
+        }
+        if (status.hasChess(tox, toy)) {
+            return false;
+        }
+        return true;
     }
 }

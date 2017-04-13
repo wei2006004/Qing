@@ -23,6 +23,18 @@ public class BoardStatus {
         }
     }
 
+    public void setChess(Chess chess, int x, int y) {
+        chesses[y][x] = chess;
+    }
+
+    public void removeChess(int x, int y) {
+        chesses[y][x] = null;
+    }
+
+    public boolean hasChess(int x, int y) {
+        return chesses[y][x] != null;
+    }
+
     public Chess get(int x, int y) {
         return chesses[y][x];
     }
