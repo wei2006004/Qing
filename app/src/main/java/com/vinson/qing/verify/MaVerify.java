@@ -14,6 +14,19 @@ public class MaVerify extends ChessVerify {
 
     @Override
     public boolean playVerify(BoardStatus status, int fromx, int fromy, int tox, int toy) {
+        if (status.hasChess(tox, toy)) {
+            return false;
+        }
+        if (Math.abs(fromx - tox) == 1 && Math.abs(fromy - toy) == 2) {
+            if (!status.hasChess(fromx, (fromy + toy) / 2)) {
+                return true;
+            }
+        }
+        if (Math.abs(fromx - tox) == 2 && Math.abs(fromy - toy) == 1) {
+            if (!status.hasChess((fromx + tox) / 2, fromy)) {
+                return true;
+            }
+        }
         return false;
     }
 }

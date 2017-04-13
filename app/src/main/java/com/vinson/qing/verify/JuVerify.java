@@ -20,6 +20,18 @@ public class JuVerify extends ChessVerify {
         if (status.hasChess(tox, toy)) {
             return false;
         }
+
+        if (fromx == tox) {
+            for (int i = Math.min(fromy, toy) + 1; i <= Math.max(fromy, toy) - 1; i++) {
+                if (status.hasChess(fromx, i)) return false;
+            }
+        }
+
+        if (fromy == toy) {
+            for (int i = Math.min(fromx, tox) + 1; i <= Math.max(fromx, tox) - 1; i++) {
+                if (status.hasChess(i, fromy)) return false;
+            }
+        }
         return true;
     }
 }
