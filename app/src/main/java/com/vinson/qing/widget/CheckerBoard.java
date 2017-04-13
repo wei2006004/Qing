@@ -13,6 +13,7 @@ import com.vinson.qing.ChessPlayer;
 import com.vinson.qing.R;
 import com.vinson.qing.bean.Chess;
 import com.vinson.qing.bean.ChessInfo;
+import com.vinson.qing.play.BoardStatus;
 import com.vinson.qing.utils.ChessUtils;
 import com.vinson.qing.utils.DimenUtils;
 
@@ -47,6 +48,7 @@ public class CheckerBoard extends ViewGroup {
 
     private BoardDrawer boardDrawer;
     private ViewDragHelper dragHelper;
+    private BoardStatus boardStatus;
 
     public CheckerBoard(Context context) {
         this(context, null);
@@ -61,6 +63,7 @@ public class CheckerBoard extends ViewGroup {
         TypedArray array = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CheckerBoard, defStyleAttr, 0);
 
         List<ChessInfo> chessInfos = new ArrayList<>();
+        boardStatus = new BoardStatus();
         for (int i = 0; i < array.getIndexCount(); i++) {
             if (array.getIndex(i) == R.styleable.CheckerBoard_fixScale) {
                 fixScale = array.getBoolean(i, false);
@@ -69,6 +72,7 @@ public class CheckerBoard extends ViewGroup {
                 boolean initChess = array.getBoolean(i, false);
                 if (initChess) {
                     chessInfos = new ArrayList<>(ChessUtils.getInitChessList());
+                    boardStatus.setChessList(ChessUtils.getInitChessList());
                 }
             }
         }
@@ -119,7 +123,7 @@ public class CheckerBoard extends ViewGroup {
                     int playy = computeBoardYByPos((int) releasedChild.getY() + childWidth / 2);
                     int rx = info.x;
                     int ry = info.y;
-                    if (ChessPlayer.playVerify(info.chess, info.x, info.y, playx, playy)) {
+                    if (ChessPlayer.playVerify(boardStatus, info.chess, info.x, info.y, playx, playy)) {
                         rx = playx;
                         ry = playy;
                     }
