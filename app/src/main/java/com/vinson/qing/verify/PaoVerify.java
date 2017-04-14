@@ -18,19 +18,36 @@ public class PaoVerify extends ChessVerify {
             return false;
         }
         if (status.hasChess(tox, toy)) {
-            return false;
+            if (status.get(tox, toy).getType() == getType()) {
+                return false;
+            } else {
+                if (getChessNum(status, fromx, fromy, tox, toy) == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            if (getChessNum(status, fromx, fromy, tox, toy) != 0) {
+                return false;
+            }
         }
+        return true;
+    }
+
+    private int getChessNum(BoardStatus status, int fromx, int fromy, int tox, int toy) {
+        int count = 0;
         if (fromx == tox) {
             for (int i = Math.min(fromy, toy) + 1; i <= Math.max(fromy, toy) - 1; i++) {
-                if (status.hasChess(fromx, i)) return false;
+                if (status.hasChess(fromx, i)) count++;
             }
         }
 
         if (fromy == toy) {
             for (int i = Math.min(fromx, tox) + 1; i <= Math.max(fromx, tox) - 1; i++) {
-                if (status.hasChess(i, fromy)) return false;
+                if (status.hasChess(i, fromy)) count++;
             }
         }
-        return true;
+        return count;
     }
 }
