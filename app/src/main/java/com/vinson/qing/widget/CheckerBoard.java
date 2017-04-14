@@ -125,6 +125,9 @@ public class CheckerBoard extends ViewGroup {
                     if (chessPlayer.verify(info.chess, info.x, info.y, playx, playy)) {
                         rx = playx;
                         ry = playy;
+                        if (chessPlayer.hasChess(rx, ry)) {
+                            deleteChessViewByPos(rx, ry);
+                        }
                         ((ChessView) releasedChild).setChessInfo(new ChessInfo(rx, ry, info.chess));
                         chessPlayer.play(info.chess, info.x, info.y, playx, playy);
                     }
@@ -135,6 +138,26 @@ public class CheckerBoard extends ViewGroup {
                 }
             }
         });
+    }
+
+    private void deleteChessViewByPos(int x, int y) {
+        View view = getChessViewByPos(x, y);
+        if (view != null) {
+            removeView(view);
+        }
+    }
+
+
+    private ChessView getChessViewByPos(int x, int y) {
+        ChessView view = null;
+        for (int i = 0; i < getChildCount(); i++) {
+            view = (ChessView) getChildAt(i);
+            ChessInfo info = view.getChessInfo();
+            if (info.x == x && info.y == y) {
+                return view;
+            }
+        }
+        return view;
     }
 
     @Override

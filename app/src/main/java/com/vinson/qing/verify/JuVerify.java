@@ -17,7 +17,7 @@ public class JuVerify extends ChessVerify {
         if (fromx != tox && fromy != toy) {
             return false;
         }
-        if (status.hasChess(tox, toy)) {
+        if (status.hasChess(tox, toy) && getType() == status.get(tox, toy).getType()) {
             return false;
         }
 

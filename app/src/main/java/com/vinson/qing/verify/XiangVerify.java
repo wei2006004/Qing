@@ -21,7 +21,7 @@ public class XiangVerify extends ChessVerify {
         if (Math.abs(fromy - toy) != 2) {
             return false;
         }
-        if (status.hasChess(tox, toy)) {
+        if (status.hasChess(tox, toy) && getType() == status.get(tox, toy).getType()) {
             return false;
         }
         if (getType() == Chess.TYPE_GREEN) {

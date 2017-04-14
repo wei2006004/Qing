@@ -37,4 +37,8 @@ public class ChessPlayer {
         boardStatus.setChess(chess, tox, toy);
         boardStatus.removeChess(fromx, fromy);
     }
+
+    public boolean hasChess(int x, int y) {
+        return boardStatus.hasChess(x, y);
+    }
 }
