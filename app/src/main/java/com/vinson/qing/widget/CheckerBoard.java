@@ -41,7 +41,6 @@ public class CheckerBoard extends ViewGroup {
     private int starty;
 
     private int childWidth;
-    private int boardPadding;
 
     private boolean fixScale;
 
@@ -90,6 +89,13 @@ public class CheckerBoard extends ViewGroup {
             @Override
             public boolean tryCaptureView(View child, int pointerId) {
                 return child instanceof ChessView;
+            }
+
+            @Override
+            public void onViewCaptured(View capturedChild, int activePointerId) {
+                // 把拖动的棋子置于顶层
+                removeView(capturedChild);
+                addView(capturedChild);
             }
 
             @Override
@@ -243,7 +249,7 @@ public class CheckerBoard extends ViewGroup {
     }
 
     private void initBoardParam(int width, int height) {
-        boardPadding = DimenUtils.dp2px(BROAD_PADDING);
+        int boardPadding = DimenUtils.dp2px(BROAD_PADDING);
         int rwidth = width - 2 * boardPadding - getPaddingLeft() - getPaddingRight();
         int rheight = height - 2 * boardPadding - getPaddingTop() - getPaddingBottom();
         float eachW = rwidth / (float) (BROAD_X_MAX_INDEX + 1);
