@@ -3,8 +3,10 @@ package com.vinson.qing;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
+import com.vinson.qing.utils.ChessUtils;
 import com.vinson.qing.widget.CheckerBoard;
 
 public class SettingActivity extends AppCompatActivity {
@@ -14,7 +16,7 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        CheckerBoard board = (CheckerBoard) findViewById(R.id.checkerBoard);
+        final CheckerBoard board = (CheckerBoard) findViewById(R.id.checkerBoard);
         board.setChessPlayListener(new CheckerBoard.ChessPlayListener() {
             @Override
             public void onPlayerChange(int currentPlayer) {
@@ -22,6 +24,12 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
         setPlayer(board.getCurrentPlayer());
+        findViewById(R.id.btn_reset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                board.setChessList(ChessUtils.getInitChessList());
+            }
+        });
     }
 
     private void setPlayer(int currentPlayer) {

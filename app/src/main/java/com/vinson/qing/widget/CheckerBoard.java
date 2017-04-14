@@ -221,6 +221,7 @@ public class CheckerBoard extends ViewGroup {
     }
 
     public void setChessList(List<ChessInfo> list) {
+        removeAllViews();
         for (ChessInfo info : list) {
             addChess(info);
         }
