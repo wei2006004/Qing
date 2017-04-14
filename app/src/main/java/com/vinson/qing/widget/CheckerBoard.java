@@ -29,6 +29,13 @@ import static com.vinson.qing.widget.BoardDrawer.BROAD_Y_MAX_INDEX;
 
 public class CheckerBoard extends ViewGroup {
 
+    public interface ChessPlayListener {
+        void onPlayerChange(int currentPlayer);
+    }
+
+    public final static int PLAYER_RED = 0;
+    public final static int PLAYER_GREEN = 1;
+
     private final static int BROAD_PADDING = 10;
 
     private final static int MIN_WIDTH = 240;
@@ -43,10 +50,13 @@ public class CheckerBoard extends ViewGroup {
     private int childWidth;
 
     private boolean fixScale;
+    private int currentPlayer = PLAYER_RED;
 
     private BoardDrawer boardDrawer;
     private ViewDragHelper dragHelper;
     private ChessPlayer chessPlayer;
+
+    private ChessPlayListener chessPlayListener;
 
     public CheckerBoard(Context context) {
         this(context, null);
@@ -88,7 +98,8 @@ public class CheckerBoard extends ViewGroup {
 
             @Override
             public boolean tryCaptureView(View child, int pointerId) {
-                return child instanceof ChessView;
+                ChessInfo info = ((ChessView) child).getChessInfo();
+                return info.chess.getType() == currentPlayer;
             }
 
             @Override
@@ -136,6 +147,7 @@ public class CheckerBoard extends ViewGroup {
                         }
                         ((ChessView) releasedChild).setChessInfo(new ChessInfo(rx, ry, info.chess));
                         chessPlayer.play(info.chess, info.x, info.y, playx, playy);
+                        changePlayer();
                     }
                     int centerx = getBoardXByIndex(rx);
                     int centery = getBoardYByIndex(ry);
@@ -144,6 +156,21 @@ public class CheckerBoard extends ViewGroup {
                 }
             }
         });
+    }
+
+    public void setChessPlayListener(ChessPlayListener listener) {
+        chessPlayListener = listener;
+    }
+
+    public int getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    private void changePlayer() {
+        currentPlayer = currentPlayer == PLAYER_RED ? PLAYER_GREEN : PLAYER_RED;
+        if (chessPlayListener != null) {
+            chessPlayListener.onPlayerChange(currentPlayer);
+        }
     }
 
     private void deleteChessViewByPos(int x, int y) {
