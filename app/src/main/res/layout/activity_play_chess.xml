@@ -29,8 +29,8 @@
 
         <com.vinson.qing.widget.ChessView
             android:id="@+id/chessView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
 
         <Button
             android:id="@+id/btn_reset"
@@ -43,6 +43,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="悔棋"/>
+
+        <Button
+            android:id="@+id/btn_change_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="调换"/>
 
         <Button
             android:id="@+id/btn_save"
