@@ -213,7 +213,9 @@ public class CheckerBoard extends ViewGroup {
 
     public void addChess(ChessInfo info) {
         ViewGroup.LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        addView(new ChessView(getContext(), info), layoutParams);
+        ChessView chessView = new ChessView(getContext());
+        chessView.setChessInfo(info);
+        addView(chessView, layoutParams);
     }
 
     public void addChess(int x, int y, Chess chess) {
