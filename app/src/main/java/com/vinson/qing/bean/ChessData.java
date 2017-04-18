@@ -5,6 +5,9 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Vinson on 2017/4/16.
  * e-mail: wei2006004@foxmail.com
@@ -17,7 +20,7 @@ public class ChessData {
     public int id;
 
     @ForeignCollectionField
-    private ForeignCollection<ChessTrack> tracks;
+    public ForeignCollection<ChessTrack> dbTracks;
 
     @DatabaseField
     public long startTime;
@@ -30,4 +33,18 @@ public class ChessData {
 
     @DatabaseField
     public String greenPlayer;
+
+    private List<ChessTrack> tracks = new ArrayList<>();
+
+    public void addTrack(ChessTrack track) {
+        tracks.add(track);
+    }
+
+    public List<ChessTrack> getTracks() {
+        return tracks;
+    }
+
+    public void setTracks(List<ChessTrack> tracks) {
+        this.tracks = tracks;
+    }
 }
