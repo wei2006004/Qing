@@ -57,6 +57,7 @@ public class ChessPlayActivity extends AppCompatActivity {
         findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                chessData.endTime = System.currentTimeMillis();
                 ChessLocalLoader.getInstance().addChessData(chessData);
                 Toast.makeText(ChessPlayActivity.this, "saved", Toast.LENGTH_LONG).show();
             }

@@ -31,12 +31,13 @@ public class ChessTrack {
     @DatabaseField
     public int chessId;
 
-    public ChessTrack(ChessData chessData, int fromx, int fromy, int tox, int toy) {
+    public ChessTrack(ChessData chessData, int fromx, int fromy, int tox, int toy, int chessId) {
         this.chessData = chessData;
         this.fromx = fromx;
         this.fromy = fromy;
         this.tox = tox;
         this.toy = toy;
+        this.chessId = chessId;
     }
 
     public ChessTrack() {

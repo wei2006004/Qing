@@ -23,8 +23,9 @@ public class ChessManualActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
-        localAdapter = new ManualAdapter();
-        networkAdapter = new ManualAdapter();
+        localAdapter = new ManualAdapter(this);
+        localAdapter.setChessDatas(ChessLocalLoader.getInstance().getChessDatas());
+        networkAdapter = new ManualAdapter(this);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter() {
             @Override
