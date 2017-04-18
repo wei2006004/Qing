@@ -31,6 +31,7 @@ public class CheckerBoard extends ViewGroup {
 
     public interface ChessPlayListener {
         void onPlayerChange(int currentPlayer);
+        void onChessPlay(Chess chess, int fromx, int fromy, int tox, int toy);
     }
 
     public final static int PLAYER_RED = 0;
@@ -147,6 +148,7 @@ public class CheckerBoard extends ViewGroup {
                         }
                         ((ChessView) releasedChild).setChessInfo(new ChessInfo(rx, ry, info.chess));
                         chessPlayer.play(info.chess, info.x, info.y, playx, playy);
+                        if (chessPlayListener != null) chessPlayListener.onChessPlay(info.chess, info.x, info.y, playx, playy);
                         changePlayer();
                     }
                     int centerx = getBoardXByIndex(rx);

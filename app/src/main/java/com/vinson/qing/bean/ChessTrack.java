@@ -28,6 +28,9 @@ public class ChessTrack {
     @DatabaseField
     public int toy;
 
+    @DatabaseField
+    public int chessId;
+
     public ChessTrack(ChessData chessData, int fromx, int fromy, int tox, int toy) {
         this.chessData = chessData;
         this.fromx = fromx;

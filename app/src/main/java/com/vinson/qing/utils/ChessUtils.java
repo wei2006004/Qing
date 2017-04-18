@@ -13,6 +13,26 @@ import java.util.List;
 
 public class ChessUtils {
 
+    private static final Chess[] chessArray = new Chess[] {
+            Chess.JU_B, Chess.MA_B, Chess.XIANG_B, Chess.SHI_B, Chess.PAO_B, Chess.BING_B,
+            Chess.JU_R, Chess.MA_R, Chess.XIANG_R, Chess.SHI_R, Chess.PAO_R, Chess.BING_R
+    };
+
+    public static Chess intToChess(int value) {
+        return chessArray[value];
+    }
+
+    public static int chessToInt(Chess chess) {
+        int ret = 0;
+        for (int i = 0; i < chessArray.length; i++) {
+            if (chess == chessArray[i]) {
+                ret = i;
+                break;
+            }
+        }
+        return ret;
+    }
+
     public static List<ChessInfo> getInitChessList() {
         List<ChessInfo> chessInfos = new ArrayList<>();
 
