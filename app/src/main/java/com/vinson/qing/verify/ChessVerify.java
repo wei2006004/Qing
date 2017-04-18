@@ -1,6 +1,6 @@
 package com.vinson.qing.verify;
 
-import com.vinson.qing.play.BoardStatus;
+import com.vinson.qing.bean.BoardStatus;
 
 /**
  * Created by Vinson on 2017/4/13.

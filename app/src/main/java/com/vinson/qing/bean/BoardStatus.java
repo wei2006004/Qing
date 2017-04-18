@@ -1,4 +1,4 @@
-package com.vinson.qing.play;
+package com.vinson.qing.bean;
 
 import com.vinson.qing.bean.Chess;
 import com.vinson.qing.bean.ChessInfo;

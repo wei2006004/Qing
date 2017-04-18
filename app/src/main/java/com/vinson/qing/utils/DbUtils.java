@@ -6,7 +6,6 @@ import com.j256.ormlite.dao.CloseableIterator;
 import com.vinson.qing.QingApplication;
 import com.vinson.qing.bean.ChessData;
 import com.vinson.qing.bean.ChessTrack;
-import com.vinson.qing.bean.DbHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

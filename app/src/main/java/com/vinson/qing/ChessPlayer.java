@@ -2,7 +2,7 @@ package com.vinson.qing;
 
 import com.vinson.qing.bean.Chess;
 import com.vinson.qing.bean.ChessInfo;
-import com.vinson.qing.play.BoardStatus;
+import com.vinson.qing.bean.BoardStatus;
 
 import java.util.List;
 

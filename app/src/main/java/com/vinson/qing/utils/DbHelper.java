@@ -1,4 +1,4 @@
-package com.vinson.qing.bean;
+package com.vinson.qing.utils;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,6 +7,8 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.vinson.qing.bean.ChessData;
+import com.vinson.qing.bean.ChessTrack;
 
 import java.sql.SQLException;
 
