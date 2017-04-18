@@ -1,6 +1,8 @@
-package com.vinson.qing.utils;
+package com.vinson.qing.manual;
 
 import com.vinson.qing.bean.ChessData;
+import com.vinson.qing.utils.BackgroundThread;
+import com.vinson.qing.utils.DbUtils;
 
 import java.util.ArrayList;
 import java.util.List;

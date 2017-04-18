@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.vinson.qing.manual.ChessManualActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -20,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_record).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RecordActivity.class));
+                startActivity(new Intent(MainActivity.this, ChessManualActivity.class));
             }
         });
     }

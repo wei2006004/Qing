@@ -36,6 +36,9 @@ public class ChessData {
 
     private List<ChessTrack> tracks = new ArrayList<>();
 
+    public ChessData() {
+    }
+
     public void addTrack(ChessTrack track) {
         tracks.add(track);
     }
