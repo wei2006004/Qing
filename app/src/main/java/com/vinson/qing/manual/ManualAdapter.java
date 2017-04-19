@@ -2,6 +2,7 @@ package com.vinson.qing.manual;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.vinson.qing.bean.ChessData;
@@ -15,11 +16,23 @@ import java.util.List;
  */
 
 public class ManualAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    public void setActionListener(UiActionListener actionListener) {
+        this.actionListener = actionListener;
+    }
+
+    private UiActionListener actionListener;
+
     private Context context;
 
     public void setChessDatas(List<ChessData> chessDatas) {
         this.chessDatas = chessDatas;
         notifyDataSetChanged();
+    }
+
+    public void deleteChessData(int position) {
+        chessDatas.remove(position);
+        notifyItemRemoved(position);
     }
 
     protected List<ChessData> chessDatas = new ArrayList<>();
@@ -30,13 +43,15 @@ public class ManualAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return ManualViewHodler.createViewHodler(context);
+        ManualViewHodler hodler = ManualViewHodler.createViewHodler(context);
+        hodler.setActionListener(actionListener);
+        return hodler;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ManualViewHodler) {
-            ((ManualViewHodler) holder).bindData(chessDatas.get(position));
+            ((ManualViewHodler) holder).bindData(chessDatas.get(position), position);
         }
     }
 
