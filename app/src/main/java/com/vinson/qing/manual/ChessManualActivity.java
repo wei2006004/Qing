@@ -1,5 +1,6 @@
 package com.vinson.qing.manual;
 
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.vinson.qing.R;
+import com.vinson.qing.bean.ChessData;
 
 public class ChessManualActivity extends AppCompatActivity {
 
@@ -26,10 +28,42 @@ public class ChessManualActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
+        initAdapter();
+        initViewPager();
+    }
+
+    private void initAdapter() {
         localAdapter = new LocalManualAdapter(this);
         localAdapter.getLoader().loadDatas();
-        networkAdapter = new NetworkManualAdapter(this);
+        localAdapter.setActionListener(new UiActionListener() {
+            @Override
+            public void onClick(ChessData chessData, int position) {
+                openManualPlayActivity(chessData);
+            }
 
+            @Override
+            public void onLongPressed(ChessData chessData, int position) {
+            }
+        });
+        networkAdapter = new NetworkManualAdapter(this);
+        networkAdapter.setActionListener(new UiActionListener() {
+            @Override
+            public void onClick(ChessData chessData, int position) {
+                openManualPlayActivity(chessData);
+            }
+
+            @Override
+            public void onLongPressed(ChessData chessData, int position) {
+            }
+        });
+    }
+
+    private void openManualPlayActivity(ChessData chessData) {
+        Intent intent = new Intent(this, ManualPlayActivity.class);
+        startActivity(intent);
+    }
+
+    private void initViewPager() {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter() {
             @Override
@@ -71,5 +105,12 @@ public class ChessManualActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        localAdapter.destroy();
+        networkAdapter.destroy();
     }
 }
