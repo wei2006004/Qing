@@ -1,4 +1,4 @@
-package com.vinson.qing.manual;
+package com.vinson.qing.loader;
 
 import com.vinson.qing.utils.BackgroundThread;
 import com.vinson.qing.utils.ThreadUtils;

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.vinson.qing.bean.ChessData;
+import com.vinson.qing.loader.Loader;
 
 import java.util.ArrayList;
 import java.util.List;

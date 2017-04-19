@@ -1,4 +1,4 @@
-package com.vinson.qing.manual;
+package com.vinson.qing.loader;
 
 import com.vinson.qing.bean.ChessData;
 

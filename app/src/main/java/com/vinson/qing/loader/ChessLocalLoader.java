@@ -1,12 +1,10 @@
-package com.vinson.qing.manual;
+package com.vinson.qing.loader;
 
 import com.vinson.qing.bean.ChessData;
-import com.vinson.qing.utils.BackgroundThread;
 import com.vinson.qing.utils.DbUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Vinson on 2017/4/18.

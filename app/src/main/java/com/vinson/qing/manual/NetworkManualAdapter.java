@@ -3,6 +3,8 @@ package com.vinson.qing.manual;
 import android.content.Context;
 
 import com.vinson.qing.bean.ChessData;
+import com.vinson.qing.loader.ChessNetworkLoader;
+import com.vinson.qing.loader.Loader;
 
 import java.util.List;
 

@@ -10,8 +10,6 @@ import android.widget.Toast;
 import com.vinson.qing.bean.Chess;
 import com.vinson.qing.bean.ChessData;
 import com.vinson.qing.bean.ChessInfo;
-import com.vinson.qing.bean.ChessTrack;
-import com.vinson.qing.manual.ChessLocalLoader;
 import com.vinson.qing.utils.ChessUtils;
 import com.vinson.qing.utils.DbService;
 import com.vinson.qing.widget.CheckerBoard;
