@@ -13,6 +13,7 @@ import com.vinson.qing.bean.ChessInfo;
 import com.vinson.qing.bean.ChessTrack;
 import com.vinson.qing.manual.ChessLocalLoader;
 import com.vinson.qing.utils.ChessUtils;
+import com.vinson.qing.utils.DbService;
 import com.vinson.qing.widget.CheckerBoard;
 import com.vinson.qing.widget.ChessView;
 
@@ -58,7 +59,7 @@ public class ChessPlayActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 chessData.endTime = System.currentTimeMillis();
-                ChessLocalLoader.getInstance().addChessData(chessData);
+                DbService.saveChessData(chessData);
                 Toast.makeText(ChessPlayActivity.this, "saved", Toast.LENGTH_LONG).show();
             }
         });

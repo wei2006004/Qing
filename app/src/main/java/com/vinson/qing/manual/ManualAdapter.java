@@ -2,7 +2,6 @@ package com.vinson.qing.manual;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.vinson.qing.bean.ChessData;
@@ -15,7 +14,9 @@ import java.util.List;
  * e-mail: wei2006004@foxmail.com
  */
 
-public class ManualAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class ManualAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Loader.LoadListener<ChessData>{
+
+    public abstract Loader<ChessData> getLoader();
 
     public void setActionListener(UiActionListener actionListener) {
         this.actionListener = actionListener;
@@ -39,6 +40,7 @@ public class ManualAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public ManualAdapter(Context context) {
         this.context = context;
+        getLoader().addLoadListener(this);
     }
 
     @Override

@@ -15,6 +15,9 @@ import com.vinson.qing.R;
 
 public class ChessManualActivity extends AppCompatActivity {
 
+    private static final int PAGE_LOCAL = 0;
+    private static final int PAGE_NETWORK = 1;
+
     private ManualAdapter localAdapter;
     private ManualAdapter networkAdapter;
 
@@ -23,16 +26,17 @@ public class ChessManualActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
-        localAdapter = new ManualAdapter(this);
-        localAdapter.setChessDatas(ChessLocalLoader.getInstance().getChessDatas());
-        networkAdapter = new ManualAdapter(this);
+        localAdapter = new LocalManualAdapter(this);
+        localAdapter.getLoader().loadDatas();
+        networkAdapter = new NetworkManualAdapter(this);
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new PagerAdapter() {
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
                 RecyclerView recyclerView = (RecyclerView) LayoutInflater.from(ChessManualActivity.this).inflate(R.layout.recyclerview, container, false);
                 recyclerView.setLayoutManager(new LinearLayoutManager(ChessManualActivity.this));
-                if (position == 0) {
+                if (position == PAGE_LOCAL) {
                     recyclerView.setAdapter(localAdapter);
                 } else {
                     recyclerView.setAdapter(networkAdapter);
@@ -49,6 +53,22 @@ public class ChessManualActivity extends AppCompatActivity {
             @Override
             public boolean isViewFromObject(View view, Object object) {
                 return view == object;
+            }
+        });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == PAGE_NETWORK) {
+                    networkAdapter.getLoader().loadDatas();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
             }
         });
     }
