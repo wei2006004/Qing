@@ -106,11 +106,4 @@ public class ChessManualActivity extends AppCompatActivity {
             }
         });
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        localAdapter.destroy();
-        networkAdapter.destroy();
-    }
 }

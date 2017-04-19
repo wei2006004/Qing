@@ -62,8 +62,4 @@ public abstract class ManualAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public int getItemCount() {
         return chessDatas.size();
     }
-
-    public void destroy() {
-        getLoader().removeLoadListener(this);
-    }
 }

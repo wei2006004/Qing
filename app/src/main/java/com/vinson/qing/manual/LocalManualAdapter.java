@@ -14,9 +14,15 @@ import java.util.List;
  */
 
 public class LocalManualAdapter extends ManualAdapter {
+
+    private Loader<ChessData> loader;
+
     @Override
     public Loader<ChessData> getLoader() {
-        return ChessLocalLoader.getInstance();
+        if (loader == null) {
+            loader = new ChessLocalLoader();
+        }
+        return loader;
     }
 
     public LocalManualAdapter(Context context) {

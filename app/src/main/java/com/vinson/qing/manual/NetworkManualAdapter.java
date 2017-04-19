@@ -18,9 +18,14 @@ public class NetworkManualAdapter extends ManualAdapter {
         super(context);
     }
 
+    private Loader<ChessData> loader;
+
     @Override
     public Loader<ChessData> getLoader() {
-        return ChessNetworkLoader.getInstance();
+        if (loader == null) {
+            loader = new ChessNetworkLoader();
+        }
+        return loader;
     }
 
     @Override

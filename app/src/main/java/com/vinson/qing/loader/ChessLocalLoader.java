@@ -11,14 +11,6 @@ import java.util.List;
  * e-mail: wei2006004@foxmail.com
  */
 public class ChessLocalLoader extends Loader<ChessData> {
-    private static ChessLocalLoader ourInstance = new ChessLocalLoader();
-
-    public static ChessLocalLoader getInstance() {
-        return ourInstance;
-    }
-
-    private ChessLocalLoader() {
-    }
 
     @Override
     public void loadDatas() {

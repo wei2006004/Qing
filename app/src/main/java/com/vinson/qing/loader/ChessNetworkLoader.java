@@ -11,15 +11,6 @@ import java.util.List;
 
 public class ChessNetworkLoader extends Loader<ChessData> {
 
-    private static ChessNetworkLoader ourInstance = new ChessNetworkLoader();
-
-    public static ChessNetworkLoader getInstance() {
-        return ourInstance;
-    }
-
-    private ChessNetworkLoader() {
-    }
-
     @Override
     public void loadDatas() {
     }
