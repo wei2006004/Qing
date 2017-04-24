@@ -59,8 +59,7 @@ public class ChessManualActivity extends AppCompatActivity {
     }
 
     private void openManualPlayActivity(ChessData chessData) {
-        Intent intent = new Intent(this, ManualPlayActivity.class);
-        startActivity(intent);
+        ManualPlayActivity.startActivity(this, chessData);
     }
 
     private void initViewPager() {

@@ -175,13 +175,30 @@ public class CheckerBoard extends ViewGroup {
         }
     }
 
+    public void playChess(Chess chess, int fromx, int fromy, int tox, int toy) {
+        if (!chessPlayer.verify(chess, fromx, fromy, tox, toy)) {
+            return;
+        }
+        ChessView chessView = getChessViewByPos(fromx, fromy);
+        if (chessPlayer.hasChess(tox, toy)) {
+            deleteChessViewByPos(tox, toy);
+        }
+        chessView.setChessInfo(new ChessInfo(tox, toy, chess));
+        chessPlayer.play(chess, fromx, fromy, tox, toy);
+        if (chessPlayListener != null) chessPlayListener.onChessPlay(chess, fromx, fromy, tox, toy);
+        changePlayer();
+        int centerx = getBoardXByIndex(tox);
+        int centery = getBoardYByIndex(toy);
+        dragHelper.smoothSlideViewTo(chessView, centerx - childWidth / 2, centery - childWidth / 2);
+        invalidate();
+    }
+
     private void deleteChessViewByPos(int x, int y) {
         View view = getChessViewByPos(x, y);
         if (view != null) {
             removeView(view);
         }
     }
-
 
     private ChessView getChessViewByPos(int x, int y) {
         ChessView view = null;
