@@ -286,7 +286,7 @@ public class CheckerBoard extends ViewGroup {
         int rheight = height - 2 * boardPadding - getPaddingTop() - getPaddingBottom();
         float eachW = rwidth / (float) (BROAD_X_MAX_INDEX + 1);
         float eachH = rheight / (float) (BROAD_Y_MAX_INDEX + 1);
-        childWidth = (int) (Math.min(eachH, eachW) * 0.85);
+        childWidth = (int) (Math.min(eachH, eachW) * 1.05);
 
         int padding = boardPadding + childWidth / 2;
         int top = getPaddingTop() + padding;

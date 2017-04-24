@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +18,7 @@ import com.vinson.qing.widget.ChessView;
 
 public class ChessPlayActivity extends AppCompatActivity {
 
-    private ChessView chessView;
+    private ImageView playerImage;
     private ChessData chessData;
 
     @Override
@@ -30,9 +31,7 @@ public class ChessPlayActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        chessView = (ChessView)findViewById(R.id.chessView);
-        chessView.setChessInfo(new ChessInfo(0, 0, Chess.JIANG_R));
-
+        playerImage = (ImageView) findViewById(R.id.image_player);
         final CheckerBoard board = (CheckerBoard) findViewById(R.id.checkerBoard);
         board.setChessPlayListener(new CheckerBoard.ChessPlayListener() {
             @Override
@@ -75,9 +74,11 @@ public class ChessPlayActivity extends AppCompatActivity {
         if (currentPlayer == CheckerBoard.PLAYER_RED) {
             textView.setText("红方");
             textView.setTextColor(Color.RED);
+            playerImage.setImageResource(R.drawable.r);
         } else {
             textView.setText("绿方");
             textView.setTextColor(Color.GREEN);
+            playerImage.setImageResource(R.drawable.b);
         }
     }
 }

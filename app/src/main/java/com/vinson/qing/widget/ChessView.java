@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vinson.qing.R;
@@ -15,7 +16,7 @@ import com.vinson.qing.bean.ChessInfo;
  * e-mail: wei2006004@foxmail.com
  */
 
-public class ChessView extends TextView {
+public class ChessView extends ImageView {
 
     private ChessInfo chessInfo;
 
@@ -29,11 +30,7 @@ public class ChessView extends TextView {
 
     public ChessView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/lishu.ttf");
-        setTypeface(typeface);
 
-        setGravity(Gravity.CENTER);
-        setTextSize(20);
     }
 
     public void setChessInfo(ChessInfo chessInfo) {
@@ -43,14 +40,7 @@ public class ChessView extends TextView {
         }
 
         this.chessInfo = chessInfo;
-        setText(chessInfo.chess.getText());
-        if (chessInfo.chess.getType() == Chess.TYPE_RED) {
-            setTextColor(getContext().getResources().getColor(R.color.chess_red));
-            setBackgroundResource(R.drawable.bg_chess_red);
-        } else {
-            setTextColor(getContext().getResources().getColor(R.color.chess_green));
-            setBackgroundResource(R.drawable.bg_chess_green);
-        }
+        setImageResource(chessInfo.chess.getImageId());
     }
 
     public ChessInfo getChessInfo() {
