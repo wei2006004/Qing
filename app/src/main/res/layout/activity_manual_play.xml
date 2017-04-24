@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         app:fixScale="true"
         app:initChess="true"
+        app:moveEnable="false"
         android:id="@+id/checkerBoard"
         android:background="#cccccc"/>
 

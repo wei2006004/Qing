@@ -51,6 +51,7 @@ public class CheckerBoard extends ViewGroup {
     private int childWidth;
 
     private boolean fixScale;
+    private boolean moveEnable = true;
     private int currentPlayer = PLAYER_RED;
 
     private BoardDrawer boardDrawer;
@@ -83,6 +84,9 @@ public class CheckerBoard extends ViewGroup {
                     chessInfos = new ArrayList<>(ChessUtils.getInitChessList());
                     chessPlayer.setChessList(ChessUtils.getInitChessList());
                 }
+            }
+            if (array.getIndex(i) == R.styleable.CheckerBoard_moveEnable) {
+                moveEnable = array.getBoolean(i, true);
             }
         }
         array.recycle();
@@ -180,6 +184,8 @@ public class CheckerBoard extends ViewGroup {
             return;
         }
         ChessView chessView = getChessViewByPos(fromx, fromy);
+        removeView(chessView);
+        addView(chessView);
         if (chessPlayer.hasChess(tox, toy)) {
             deleteChessViewByPos(tox, toy);
         }
@@ -219,7 +225,9 @@ public class CheckerBoard extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        dragHelper.processTouchEvent(event);
+        if (moveEnable) {
+            dragHelper.processTouchEvent(event);
+        }
         return true;
     }
 

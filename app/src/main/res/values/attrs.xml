@@ -2,9 +2,11 @@
 <resources>
     <attr name="fixScale" format="boolean"/>
     <attr name="initChess" format="boolean"/>
+    <attr name="moveEnable" format="boolean"/>
 
     <declare-styleable name="CheckerBoard">
         <attr name="fixScale"/>
         <attr name="initChess"/>
+        <attr name="moveEnable"/>
     </declare-styleable>
 </resources>
