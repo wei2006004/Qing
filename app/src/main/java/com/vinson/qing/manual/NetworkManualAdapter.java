@@ -30,6 +30,6 @@ public class NetworkManualAdapter extends ManualAdapter {
 
     @Override
     public void onLoadDone(int result, int type, List<ChessData> list) {
-
+        setChessDatas(list);
     }
 }

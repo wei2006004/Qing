@@ -44,6 +44,7 @@ public class ChessManualActivity extends AppCompatActivity {
             }
         });
         networkAdapter = new NetworkManualAdapter(this);
+        networkAdapter.getLoader().loadDatas();
         networkAdapter.setActionListener(new UiActionListener() {
             @Override
             public void onClick(ChessData chessData, int position) {
@@ -84,22 +85,6 @@ public class ChessManualActivity extends AppCompatActivity {
             @Override
             public boolean isViewFromObject(View view, Object object) {
                 return view == object;
-            }
-        });
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (position == PAGE_NETWORK) {
-                    networkAdapter.getLoader().loadDatas();
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
             }
         });
     }
