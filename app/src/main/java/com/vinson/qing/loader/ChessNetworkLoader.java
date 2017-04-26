@@ -1,16 +1,18 @@
 package com.vinson.qing.loader;
 
 import com.vinson.qing.bean.ChessData;
-import com.vinson.qing.utils.L;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Vinson on 2017/4/19.
@@ -25,23 +27,27 @@ public class ChessNetworkLoader extends Loader<ChessData> {
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.60.104.60:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
     }
 
     @Override
     public void loadDatas() {
         ChessDataService service = retrofit.create(ChessDataService.class);
-        Call<List<ChessData>> call = service.getChessList();
-        call.enqueue(new Callback<List<ChessData>>() {
+        Observable<List<ChessData>> observable = service.getChessList();
+        observable.map(new Func1<List<ChessData>, List<ChessData>>(){
             @Override
-            public void onResponse(Call<List<ChessData>> call, Response<List<ChessData>> response) {
+            public List<ChessData> call(List<ChessData> list) {
                 chessDatas.clear();
-                chessDatas.addAll(response.body());
-                notifyLoadDoneToMainThread(0, 0, chessDatas);
+                chessDatas.addAll(list);
+                return list;
             }
-
+        }).subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<List<ChessData>>() {
             @Override
-            public void onFailure(Call<List<ChessData>> call, Throwable t) {
+            public void call(List<ChessData> list) {
+                notifyLoadDone(0, 0, chessDatas);
             }
         });
     }

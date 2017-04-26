@@ -4,8 +4,8 @@ import com.vinson.qing.bean.ChessData;
 
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.http.GET;
+import rx.Observable;
 
 /**
  * Created by Vinson on 2017/4/24.
@@ -14,5 +14,5 @@ import retrofit2.http.GET;
 public interface ChessDataService {
 
     @GET("/chess-list")
-    Call<List<ChessData>> getChessList();
+    Observable<List<ChessData>> getChessList();
 }
