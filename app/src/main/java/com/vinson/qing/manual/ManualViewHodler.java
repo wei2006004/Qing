@@ -8,6 +8,9 @@ import android.widget.TextView;
 import com.vinson.qing.R;
 import com.vinson.qing.bean.ChessData;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Vinson on 2017/4/18.
  * e-mail: wei2006004@foxmail.com
@@ -21,20 +24,21 @@ public class ManualViewHodler extends RecyclerView.ViewHolder {
 
     private UiActionListener actionListener;
 
-    private TextView player1;
-    private TextView player2;
-    private TextView time;
-    private TextView duration;
+    @BindView(R.id.player1)
+    TextView player1;
+    @BindView(R.id.player2)
+    TextView player2;
+    @BindView(R.id.time)
+    TextView time;
+    @BindView(R.id.duration)
+    TextView duration;
 
     private ChessData chessData;
     private int position;
 
     private ManualViewHodler(View itemView) {
         super(itemView);
-        player1 = $(R.id.player1);
-        player2 = $(R.id.player2);
-        time = $(R.id.time);
-        duration = $(R.id.duration);
+        ButterKnife.bind(this, itemView);
     }
 
     public void bindData(ChessData data, int pos) {
@@ -65,11 +69,6 @@ public class ManualViewHodler extends RecyclerView.ViewHolder {
 
     public static ManualViewHodler createViewHodler(Context context) {
         return new ManualViewHodler(View.inflate(context, R.layout.layout_manual_item, null));
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> T $(int resd){
-        return (T)itemView.findViewById(resd);
     }
 
     public ChessData getChessData() {
