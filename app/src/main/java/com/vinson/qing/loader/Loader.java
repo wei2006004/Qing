@@ -1,8 +1,5 @@
 package com.vinson.qing.loader;
 
-import com.vinson.qing.utils.BackgroundThread;
-import com.vinson.qing.utils.ThreadUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,22 +27,9 @@ public abstract class Loader<T> {
 
     public abstract List<T> getLastLoadData();
 
-    protected static void post(Runnable runnable) {
-        BackgroundThread.post(runnable);
-    }
-
     protected void notifyLoadDone(int result, int type, List<T> list) {
         for (LoadListener<T> loadListener : listeners) {
             loadListener.onLoadDone(result, type, list);
         }
-    }
-
-    protected void notifyLoadDoneToMainThread(final int result, final int type, final List<T> list) {
-        ThreadUtils.postToMainThread(new Runnable() {
-            @Override
-            public void run() {
-                notifyLoadDone(result, type, list);
-            }
-        });
     }
 }

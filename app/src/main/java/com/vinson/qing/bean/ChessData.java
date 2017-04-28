@@ -7,6 +7,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToMany;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.greenrobot.greendao.annotation.Generated;
@@ -31,7 +32,7 @@ public class ChessData implements Parcelable {
     public String greenPlayer;
 
     @ToMany(referencedJoinProperty = "dataId")
-    private List<ChessTrack> tracks;
+    public List<ChessTrack> tracks;
 
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
@@ -196,5 +197,19 @@ public class ChessData implements Parcelable {
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getChessDataDao() : null;
+    }
+
+    public void addTrack(Chess chess, int fromx, int fromy, int tox, int toy) {
+        if (tracks == null) {
+            tracks = new ArrayList<>();
+        }
+        tracks.add(new ChessTrack(0, id, fromx, fromy, tox, toy, chess));
+    }
+
+    public List<ChessTrack> getTempTracks() {
+        if (tracks == null) {
+            return new ArrayList<>();
+        }
+        return tracks;
     }
 }

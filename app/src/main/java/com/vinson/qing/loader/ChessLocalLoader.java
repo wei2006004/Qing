@@ -1,10 +1,12 @@
 package com.vinson.qing.loader;
 
 import com.vinson.qing.bean.ChessData;
-import com.vinson.qing.utils.DbUtils;
+import com.vinson.qing.utils.DbService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.functions.Action2;
 
 /**
  * Created by Vinson on 2017/4/18.
@@ -14,13 +16,14 @@ public class ChessLocalLoader extends Loader<ChessData> {
 
     @Override
     public void loadDatas() {
-        post(new Runnable() {
+        DbService.getChessDataList(new Action2<List<ChessData>, Integer>() {
             @Override
-            public void run() {
-                List<ChessData> list = DbUtils.getChessDataList();
-                chessDatas.clear();
-                chessDatas.addAll(list);
-                notifyLoadDoneToMainThread(0, 0, chessDatas);
+            public void call(List<ChessData> list, Integer integer) {
+                if (integer == 0) {
+                    chessDatas.clear();
+                    chessDatas.addAll(list);
+                }
+                notifyLoadDone(integer, 0, chessDatas);
             }
         });
     }

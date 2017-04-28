@@ -10,6 +10,7 @@ import com.vinson.qing.bean.Chess;
 import com.vinson.qing.bean.ChessData;
 import com.vinson.qing.utils.ChessUtils;
 import com.vinson.qing.utils.DbService;
+import com.vinson.qing.utils.ObserverAdapter;
 import com.vinson.qing.widget.CheckerBoard;
 
 import java.util.Date;
@@ -33,8 +34,12 @@ public class ChessPlayActivity extends BaseActivity {
     @OnClick(R.id.btn_save)
     void onSave() {
         chessData.endTime = new Date();
-        DbService.saveChessData(chessData);
-        Toast.makeText(ChessPlayActivity.this, "saved", Toast.LENGTH_LONG).show();
+        DbService.saveChessData(chessData, new ObserverAdapter<Object>() {
+            @Override
+            public void onCompleted() {
+                Toast.makeText(ChessPlayActivity.this, "saved", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @OnClick(R.id.btn_reset)
@@ -60,7 +65,7 @@ public class ChessPlayActivity extends BaseActivity {
 
             @Override
             public void onChessPlay(Chess chess, int fromx, int fromy, int tox, int toy) {
-//                chessData.addTrack(chess, fromx, fromy, tox, toy);
+                chessData.addTrack(chess, fromx, fromy, tox, toy);
             }
         });
         setPlayer(checkerBoard.getCurrentPlayer());
