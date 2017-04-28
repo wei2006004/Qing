@@ -1,20 +1,18 @@
 package com.vinson.qing;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vinson.qing.bean.Chess;
 import com.vinson.qing.bean.ChessData;
-import com.vinson.qing.bean.ChessInfo;
 import com.vinson.qing.utils.ChessUtils;
 import com.vinson.qing.utils.DbService;
 import com.vinson.qing.widget.CheckerBoard;
-import com.vinson.qing.widget.ChessView;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,7 +32,7 @@ public class ChessPlayActivity extends BaseActivity {
 
     @OnClick(R.id.btn_save)
     void onSave() {
-        chessData.endTime = System.currentTimeMillis();
+        chessData.endTime = new Date();
         DbService.saveChessData(chessData);
         Toast.makeText(ChessPlayActivity.this, "saved", Toast.LENGTH_LONG).show();
     }
@@ -62,7 +60,7 @@ public class ChessPlayActivity extends BaseActivity {
 
             @Override
             public void onChessPlay(Chess chess, int fromx, int fromy, int tox, int toy) {
-                chessData.addTrack(chess, fromx, fromy, tox, toy);
+//                chessData.addTrack(chess, fromx, fromy, tox, toy);
             }
         });
         setPlayer(checkerBoard.getCurrentPlayer());
@@ -70,7 +68,7 @@ public class ChessPlayActivity extends BaseActivity {
 
     private void initData() {
         chessData = new ChessData();
-        chessData.startTime = System.currentTimeMillis();
+        chessData.startTime = new Date();
         chessData.redPlayer = "棋手1";
         chessData.greenPlayer = "棋手2";
     }

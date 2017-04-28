@@ -51,13 +51,13 @@ public class ManualPlayActivity extends BaseActivity {
 
     @OnClick(R.id.btn_next)
     void doNext() {
-        backBtn.setEnabled(true);
-        ChessTrack track = chessData.getTracks().get(currentTrack);
-        checkerBoard.playChess(track.getChess(), track.fromx, track.fromy, track.tox, track.toy);
-        currentTrack ++;
-        if (currentTrack == chessData.getTracks().size()) {
-            nextBtn.setEnabled(false);
-        }
+//        backBtn.setEnabled(true);
+//        ChessTrack track = chessData.getTracks().get(currentTrack);
+//        checkerBoard.playChess(track.getChess(), track.fromx, track.fromy, track.tox, track.toy);
+//        currentTrack ++;
+//        if (currentTrack == chessData.getTracks().size()) {
+//            nextBtn.setEnabled(false);
+//        }
     }
 
     @Override

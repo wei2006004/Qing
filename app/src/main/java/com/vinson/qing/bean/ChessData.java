@@ -3,50 +3,60 @@ package com.vinson.qing.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.j256.ormlite.dao.ForeignCollection;
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
-import com.j256.ormlite.table.DatabaseTable;
-import com.vinson.qing.utils.ChessUtils;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.ToMany;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.DaoException;
 
 /**
  * Created by Vinson on 2017/4/16.
  * e-mail: wei2006004@foxmail.com
  */
+@Entity
+public class ChessData implements Parcelable {
 
-@DatabaseTable(tableName = "chess_data")
-public class ChessData implements Parcelable{
+    @Id
+    public long id;
 
-    @DatabaseField(generatedId = true)
-    public int id;
+    public Date startTime;
 
-    @ForeignCollectionField
-    public ForeignCollection<ChessTrack> dbTracks;
+    public Date endTime;
 
-    @DatabaseField
-    public long startTime;
-
-    @DatabaseField
-    public long endTime;
-
-    @DatabaseField
     public String redPlayer;
 
-    @DatabaseField
     public String greenPlayer;
 
-    private List<ChessTrack> tracks = new ArrayList<>();
+    @ToMany(referencedJoinProperty = "dataId")
+    private List<ChessTrack> tracks;
 
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+
+    /** Used for active entity operations. */
+    @Generated(hash = 28950249)
+    private transient ChessDataDao myDao;
+
+    @Generated(hash = 73734044)
+    public ChessData(long id, Date startTime, Date endTime, String redPlayer,
+            String greenPlayer) {
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.redPlayer = redPlayer;
+        this.greenPlayer = greenPlayer;
+    }
+
+    @Generated(hash = 2145433533)
     public ChessData() {
     }
 
     protected ChessData(Parcel in) {
-        id = in.readInt();
-        startTime = in.readLong();
-        endTime = in.readLong();
+        id = in.readLong();
         redPlayer = in.readString();
         greenPlayer = in.readString();
         tracks = in.createTypedArrayList(ChessTrack.CREATOR);
@@ -64,28 +74,108 @@ public class ChessData implements Parcelable{
         }
     };
 
-    public void addTrack(Chess chess, int fromx, int fromy, int tox, int toy) {
-        ChessTrack track = new ChessTrack();
-        track.chessData = this;
-        track.chessId = ChessUtils.chessToInt(chess);
-        track.fromx = fromx;
-        track.fromy = fromy;
-        track.tox = tox;
-        track.toy = toy;
-        tracks.add(track);
+    public long getId() {
+        return this.id;
     }
 
-    public void addTrack(ChessTrack track) {
-        track.chessData = this;
-        tracks.add(track);
+    public void setId(long id) {
+        this.id = id;
     }
 
+    public Date getStartTime() {
+        return this.startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return this.endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getRedPlayer() {
+        return this.redPlayer;
+    }
+
+    public void setRedPlayer(String redPlayer) {
+        this.redPlayer = redPlayer;
+    }
+
+    public String getGreenPlayer() {
+        return this.greenPlayer;
+    }
+
+    public void setGreenPlayer(String greenPlayer) {
+        this.greenPlayer = greenPlayer;
+    }
+
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 1558884702)
     public List<ChessTrack> getTracks() {
+        if (tracks == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ChessTrackDao targetDao = daoSession.getChessTrackDao();
+            List<ChessTrack> tracksNew = targetDao._queryChessData_Tracks(id);
+            synchronized (this) {
+                if (tracks == null) {
+                    tracks = tracksNew;
+                }
+            }
+        }
         return tracks;
     }
 
-    public void setTracks(List<ChessTrack> tracks) {
-        this.tracks = tracks;
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 1878244390)
+    public synchronized void resetTracks() {
+        tracks = null;
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 128553479)
+    public void delete() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.delete(this);
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 1942392019)
+    public void refresh() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.refresh(this);
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 713229351)
+    public void update() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.update(this);
     }
 
     @Override
@@ -95,11 +185,16 @@ public class ChessData implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeLong(startTime);
-        dest.writeLong(endTime);
+        dest.writeLong(id);
         dest.writeString(redPlayer);
         dest.writeString(greenPlayer);
         dest.writeTypedList(tracks);
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 958399222)
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getChessDataDao() : null;
     }
 }
