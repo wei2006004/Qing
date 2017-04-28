@@ -8,16 +8,19 @@ import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Index;
 
 /**
  * Created by Vinson on 2017/4/16.
  * e-mail: wei2006004@foxmail.com
  */
 
-@Entity
+@Entity(indexes = {
+        @Index("index ASC")
+})
 public class ChessTrack implements Parcelable{
-    @Id
-    public int id;
+    @Id(autoincrement = true)
+    public Long id;
 
     public long dataId;
 
@@ -29,18 +32,21 @@ public class ChessTrack implements Parcelable{
 
     public int toy;
 
+    public int index;
+
     @Convert(converter = ChessConverter.class, columnType = Integer.class)
     public Chess chess;
 
-    @Generated(hash = 17009311)
-    public ChessTrack(int id, long dataId, int fromx, int fromy, int tox, int toy,
-            Chess chess) {
+    @Generated(hash = 1007825287)
+    public ChessTrack(Long id, long dataId, int fromx, int fromy, int tox, int toy,
+            int index, Chess chess) {
         this.id = id;
         this.dataId = dataId;
         this.fromx = fromx;
         this.fromy = fromy;
         this.tox = tox;
         this.toy = toy;
+        this.index = index;
         this.chess = chess;
     }
 
@@ -49,12 +55,14 @@ public class ChessTrack implements Parcelable{
     }
 
     protected ChessTrack(Parcel in) {
-        id = in.readInt();
+        id = in.readLong();
         dataId = in.readLong();
         fromx = in.readInt();
         fromy = in.readInt();
         tox = in.readInt();
         toy = in.readInt();
+        index = in.readInt();
+        chess = in.readParcelable(Chess.class.getClassLoader());
     }
 
     public static final Creator<ChessTrack> CREATOR = new Creator<ChessTrack>() {
@@ -69,11 +77,11 @@ public class ChessTrack implements Parcelable{
         }
     };
 
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -125,6 +133,14 @@ public class ChessTrack implements Parcelable{
         this.chess = chess;
     }
 
+    public int getIndex() {
+        return this.index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -132,11 +148,13 @@ public class ChessTrack implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeLong(id);
         dest.writeLong(dataId);
         dest.writeInt(fromx);
         dest.writeInt(fromy);
         dest.writeInt(tox);
         dest.writeInt(toy);
+        dest.writeInt(index);
+        dest.writeParcelable(chess, flags);
     }
 }

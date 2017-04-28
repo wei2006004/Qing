@@ -10,6 +10,7 @@ import org.greenrobot.greendao.annotation.ToMany;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 
@@ -20,8 +21,8 @@ import org.greenrobot.greendao.DaoException;
 @Entity
 public class ChessData implements Parcelable {
 
-    @Id
-    public long id;
+    @Id(autoincrement = true)
+    public Long id;
 
     public Date startTime;
 
@@ -34,17 +35,20 @@ public class ChessData implements Parcelable {
     @ToMany(referencedJoinProperty = "dataId")
     public List<ChessTrack> tracks;
 
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
 
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     @Generated(hash = 28950249)
     private transient ChessDataDao myDao;
 
-    @Generated(hash = 73734044)
-    public ChessData(long id, Date startTime, Date endTime, String redPlayer,
-            String greenPlayer) {
+    @Generated(hash = 115894785)
+    public ChessData(Long id, Date startTime, Date endTime, String redPlayer, String greenPlayer) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -58,6 +62,8 @@ public class ChessData implements Parcelable {
 
     protected ChessData(Parcel in) {
         id = in.readLong();
+        startTime = (Date) in.readSerializable();
+        endTime = (Date) in.readSerializable();
         redPlayer = in.readString();
         greenPlayer = in.readString();
         tracks = in.createTypedArrayList(ChessTrack.CREATOR);
@@ -75,11 +81,11 @@ public class ChessData implements Parcelable {
         }
     };
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -137,7 +143,9 @@ public class ChessData implements Parcelable {
         return tracks;
     }
 
-    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    /**
+     * Resets a to-many relationship, making the next get call to query for a fresh result.
+     */
     @Generated(hash = 1878244390)
     public synchronized void resetTracks() {
         tracks = null;
@@ -187,23 +195,21 @@ public class ChessData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(id);
+        dest.writeSerializable(startTime);
+        dest.writeSerializable(endTime);
         dest.writeString(redPlayer);
         dest.writeString(greenPlayer);
         dest.writeTypedList(tracks);
     }
 
-    /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 958399222)
-    public void __setDaoSession(DaoSession daoSession) {
-        this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getChessDataDao() : null;
-    }
+    private transient int currentIndex = 0;
 
     public void addTrack(Chess chess, int fromx, int fromy, int tox, int toy) {
         if (tracks == null) {
             tracks = new ArrayList<>();
         }
-        tracks.add(new ChessTrack(0, id, fromx, fromy, tox, toy, chess));
+        tracks.add(new ChessTrack(null, 0, fromx, fromy, tox, toy, currentIndex, chess));
+        currentIndex++;
     }
 
     public List<ChessTrack> getTempTracks() {
@@ -211,5 +217,12 @@ public class ChessData implements Parcelable {
             return new ArrayList<>();
         }
         return tracks;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 958399222)
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getChessDataDao() : null;
     }
 }

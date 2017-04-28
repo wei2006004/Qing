@@ -39,6 +39,11 @@ public class ChessPlayActivity extends BaseActivity {
             public void onCompleted() {
                 Toast.makeText(ChessPlayActivity.this, "saved", Toast.LENGTH_LONG).show();
             }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(ChessPlayActivity.this, "error", Toast.LENGTH_LONG).show();
+            }
         });
     }
 

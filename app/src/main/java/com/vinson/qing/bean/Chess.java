@@ -1,6 +1,10 @@
 package com.vinson.qing.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.vinson.qing.R;
+import com.vinson.qing.utils.ChessUtils;
 import com.vinson.qing.verify.BingVerify;
 import com.vinson.qing.verify.ChessVerify;
 import com.vinson.qing.verify.JiangVerify;
@@ -15,7 +19,7 @@ import com.vinson.qing.verify.XiangVerify;
  * e-mail: wei2006004@foxmail.com
  */
 
-public enum Chess {
+public enum Chess implements Parcelable{
 
     JIANG_R(Chess.TYPE_RED, "帅", new JiangVerify(Chess.TYPE_RED), R.drawable.rb),
     XIANG_R(Chess.TYPE_RED, "相", new XiangVerify(Chess.TYPE_RED), R.drawable.rx),
@@ -40,6 +44,28 @@ public enum Chess {
     private int type;
     private ChessVerify chessVerify;
     private int imageId;
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(ChessUtils.chessToInt(this));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Chess> CREATOR = new Creator<Chess>() {
+        @Override
+        public Chess createFromParcel(Parcel in) {
+            return ChessUtils.intToChess(in.readInt());
+        }
+
+        @Override
+        public Chess[] newArray(int size) {
+            return new Chess[size];
+        }
+    };
 
     public int getImageId() {
         return imageId;

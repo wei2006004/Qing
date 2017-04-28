@@ -29,6 +29,9 @@ public class DbService {
                 .flatMap(new Func1<ChessData, Observable<ChessTrack>>() {
                     @Override
                     public Observable<ChessTrack> call(ChessData chessData) {
+                        for(ChessTrack track : chessData.getTempTracks()) {
+                            track.setDataId(chessData.getId());
+                        }
                         return Observable.from(chessData.getTempTracks());
                     }
                 })
@@ -53,15 +56,16 @@ public class DbService {
         dataDao.loadAll().flatMap(new Func1<List<ChessData>, Observable<ChessData>>() {
             @Override
             public Observable<ChessData> call(List<ChessData> list) {
-                result.addAll(list);
                 return Observable.from(list);
             }
-        }).flatMap(new Func1<ChessData, Observable<ChessTrack>>() {
+        }).map(new Func1<ChessData, ChessData>() {
             @Override
-            public Observable<ChessTrack> call(ChessData chessData) {
-                return Observable.from(chessData.getTracks());
+            public ChessData call(ChessData chessData) {
+                chessData.getTracks();
+                result.add(chessData);
+                return chessData;
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new ObserverAdapter<ChessTrack>() {
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new ObserverAdapter<ChessData>() {
             @Override
             public void onCompleted() {
                 action2.call(result, 0);

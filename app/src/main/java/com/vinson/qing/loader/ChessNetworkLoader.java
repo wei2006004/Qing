@@ -1,6 +1,7 @@
 package com.vinson.qing.loader;
 
 import com.vinson.qing.bean.ChessData;
+import com.vinson.qing.utils.ObserverAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +45,15 @@ public class ChessNetworkLoader extends Loader<ChessData> {
             }
         }).subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<List<ChessData>>() {
+        .subscribe(new ObserverAdapter<List<ChessData>>() {
             @Override
-            public void call(List<ChessData> list) {
+            public void onCompleted() {
                 notifyLoadDone(0, 0, chessDatas);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                notifyLoadDone(1, 0, chessDatas);
             }
         });
     }
