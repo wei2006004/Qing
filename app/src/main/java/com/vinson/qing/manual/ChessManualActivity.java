@@ -10,10 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.vinson.qing.BaseActivity;
 import com.vinson.qing.R;
 import com.vinson.qing.bean.ChessData;
 
-public class ChessManualActivity extends AppCompatActivity {
+public class ChessManualActivity extends BaseActivity {
 
     private static final int PAGE_LOCAL = 0;
     private static final int PAGE_NETWORK = 1;
@@ -24,7 +25,6 @@ public class ChessManualActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_record);
 
         initAdapter();
         initViewPager();
@@ -87,5 +87,10 @@ public class ChessManualActivity extends AppCompatActivity {
                 return view == object;
             }
         });
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_record;
     }
 }

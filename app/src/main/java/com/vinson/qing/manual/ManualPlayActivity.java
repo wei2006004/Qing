@@ -2,20 +2,31 @@ package com.vinson.qing.manual;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Button;
 
+import com.vinson.qing.BaseActivity;
 import com.vinson.qing.R;
 import com.vinson.qing.bean.ChessData;
 import com.vinson.qing.bean.ChessTrack;
 import com.vinson.qing.widget.CheckerBoard;
 
-public class ManualPlayActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.OnClick;
+
+public class ManualPlayActivity extends BaseActivity {
 
     private ChessData chessData;
     private int currentTrack;
+
+    @BindView(R.id.checkerBoard)
     CheckerBoard checkerBoard;
+
+    @BindView(R.id.btn_back)
+    Button backBtn;
+
+    @BindView(R.id.btn_next)
+    Button nextBtn;
 
     private static final String EXTRA_CHESS_DATA = "EXTRA_CHESS_DATA";
 
@@ -28,37 +39,29 @@ public class ManualPlayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manual_play);
 
         chessData = getIntent().getParcelableExtra(EXTRA_CHESS_DATA);
-
-        checkerBoard = (CheckerBoard) findViewById(R.id.checkerBoard);
-        findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doNext();
-            }
-        });
-        findViewById(R.id.btn_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doBack();
-            }
-        });
-        findViewById(R.id.btn_back).setEnabled(false);
+        backBtn.setEnabled(false);
     }
 
-    private void doBack() {
+    @OnClick(R.id.btn_back)
+    void doBack() {
 
     }
 
-    private void doNext() {
-        findViewById(R.id.btn_back).setEnabled(true);
+    @OnClick(R.id.btn_next)
+    void doNext() {
+        backBtn.setEnabled(true);
         ChessTrack track = chessData.getTracks().get(currentTrack);
         checkerBoard.playChess(track.getChess(), track.fromx, track.fromy, track.tox, track.toy);
         currentTrack ++;
         if (currentTrack == chessData.getTracks().size()) {
-            findViewById(R.id.btn_next).setEnabled(false);
+            nextBtn.setEnabled(false);
         }
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_manual_play;
     }
 }

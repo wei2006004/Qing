@@ -16,24 +16,45 @@ import com.vinson.qing.utils.DbService;
 import com.vinson.qing.widget.CheckerBoard;
 import com.vinson.qing.widget.ChessView;
 
-public class ChessPlayActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.OnClick;
 
-    private ImageView playerImage;
-    private ChessData chessData;
+public class ChessPlayActivity extends BaseActivity {
+
+    @BindView(R.id.image_player)
+    ImageView playerImage;
+
+    @BindView(R.id.checkerBoard)
+    CheckerBoard checkerBoard;
+
+    @BindView(R.id.tv_player)
+    TextView playerText;
+
+    ChessData chessData;
+
+    @OnClick(R.id.btn_save)
+    void onSave() {
+        chessData.endTime = System.currentTimeMillis();
+        DbService.saveChessData(chessData);
+        Toast.makeText(ChessPlayActivity.this, "saved", Toast.LENGTH_LONG).show();
+    }
+
+    @OnClick(R.id.btn_reset)
+    void onReset() {
+        checkerBoard.setChessList(ChessUtils.getInitChessList());
+        initData();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play_chess);
 
         initData();
         initView();
     }
 
     private void initView() {
-        playerImage = (ImageView) findViewById(R.id.image_player);
-        final CheckerBoard board = (CheckerBoard) findViewById(R.id.checkerBoard);
-        board.setChessPlayListener(new CheckerBoard.ChessPlayListener() {
+        checkerBoard.setChessPlayListener(new CheckerBoard.ChessPlayListener() {
             @Override
             public void onPlayerChange(int currentPlayer) {
                 setPlayer(currentPlayer);
@@ -44,22 +65,7 @@ public class ChessPlayActivity extends AppCompatActivity {
                 chessData.addTrack(chess, fromx, fromy, tox, toy);
             }
         });
-        setPlayer(board.getCurrentPlayer());
-        findViewById(R.id.btn_reset).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                board.setChessList(ChessUtils.getInitChessList());
-                initData();
-            }
-        });
-        findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chessData.endTime = System.currentTimeMillis();
-                DbService.saveChessData(chessData);
-                Toast.makeText(ChessPlayActivity.this, "saved", Toast.LENGTH_LONG).show();
-            }
-        });
+        setPlayer(checkerBoard.getCurrentPlayer());
     }
 
     private void initData() {
@@ -70,15 +76,19 @@ public class ChessPlayActivity extends AppCompatActivity {
     }
 
     private void setPlayer(int currentPlayer) {
-        TextView textView = (TextView) findViewById(R.id.tv_player);
         if (currentPlayer == CheckerBoard.PLAYER_RED) {
-            textView.setText("红方");
-            textView.setTextColor(Color.RED);
+            playerText.setText("红方");
+            playerText.setTextColor(Color.RED);
             playerImage.setImageResource(R.drawable.r);
         } else {
-            textView.setText("绿方");
-            textView.setTextColor(Color.GREEN);
+            playerText.setText("绿方");
+            playerText.setTextColor(Color.GREEN);
             playerImage.setImageResource(R.drawable.b);
         }
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_play_chess;
     }
 }
