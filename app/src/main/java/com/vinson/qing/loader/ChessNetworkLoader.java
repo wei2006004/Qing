@@ -2,6 +2,7 @@ package com.vinson.qing.loader;
 
 import com.vinson.qing.bean.ChessData;
 import com.vinson.qing.utils.ObserverAdapter;
+import com.vinson.qing.utils.ServerConnect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,19 +23,9 @@ import rx.schedulers.Schedulers;
 
 public class ChessNetworkLoader extends Loader<ChessData> {
 
-    private Retrofit retrofit;
-
-    public ChessNetworkLoader() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.60.104.60:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
-    }
-
     @Override
     public void loadDatas() {
-        ChessDataService service = retrofit.create(ChessDataService.class);
+        ChessDataService service = ServerConnect.getRetrofit().create(ChessDataService.class);
         Observable<List<ChessData>> observable = service.getChessList();
         observable.map(new Func1<List<ChessData>, List<ChessData>>(){
             @Override
