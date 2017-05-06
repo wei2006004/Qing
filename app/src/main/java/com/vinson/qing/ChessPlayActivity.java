@@ -1,7 +1,13 @@
 package com.vinson.qing;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -10,6 +16,7 @@ import com.vinson.qing.bean.Chess;
 import com.vinson.qing.bean.ChessData;
 import com.vinson.qing.utils.ChessUtils;
 import com.vinson.qing.utils.DbService;
+import com.vinson.qing.utils.L;
 import com.vinson.qing.utils.ObserverAdapter;
 import com.vinson.qing.widget.CheckerBoard;
 
@@ -30,6 +37,18 @@ public class ChessPlayActivity extends BaseActivity {
     TextView playerText;
 
     ChessData chessData;
+    IUcciInteface ucciInteface;
+
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            ucciInteface = IUcciInteface.Stub.asInterface(service);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
 
     @OnClick(R.id.btn_save)
     void onSave() {
@@ -53,12 +72,29 @@ public class ChessPlayActivity extends BaseActivity {
         initData();
     }
 
+    @OnClick(R.id.btn_change_player)
+    void onChangePlayer() {
+        try {
+            String string = ucciInteface.bestMove("hh", 2);
+            L.d("bind", string);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         initData();
         initView();
+
+        bindChessService();
+    }
+
+    private void bindChessService() {
+        Intent intent = new Intent(this, ChessService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT);
     }
 
     private void initView() {
@@ -93,6 +129,13 @@ public class ChessPlayActivity extends BaseActivity {
             playerText.setTextColor(Color.GREEN);
             playerImage.setImageResource(R.drawable.b);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(serviceConnection);
+        ucciInteface = null;
     }
 
     @Override

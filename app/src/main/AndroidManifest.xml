@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vinson.qing">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".QingApplication"
@@ -20,7 +20,13 @@
         </activity>
         <activity android:name=".ChessPlayActivity" />
         <activity android:name=".manual.ChessManualActivity" />
-        <activity android:name=".manual.ManualPlayActivity"></activity>
+        <activity android:name=".manual.ManualPlayActivity" />
+
+        <service
+            android:name=".ChessService"
+            android:process=":service"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>
