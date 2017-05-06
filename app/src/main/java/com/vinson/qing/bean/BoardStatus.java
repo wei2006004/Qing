@@ -35,4 +35,35 @@ public class BoardStatus {
     public Chess get(int x, int y) {
         return chesses[y][x];
     }
+
+    public String toFenText() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < BROAD_Y_NUM; i++) {
+            for (int j = 0; j < BROAD_X_NUM; j++) {
+                char by = 0;
+                int count = 0;
+                do {
+                    if (get(j, i) == null) {
+                        by = 0;
+                    } else {
+                        by = get(j, i).getFenChar();
+                    }
+                    if (by == 0) {
+                        count++;
+                        j++;
+                    }
+                } while (by == 0 && j < BROAD_X_NUM);
+                if (count == 0) {
+                    builder.append(by);
+                } else {
+                    builder.append((char) ('0' + count));
+                    if (by != 0) {
+                        builder.append(by);
+                    }
+                }
+            }
+            builder.append('/');
+        }
+        return builder.substring(0, builder.length() - 1);
+    }
 }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.vinson.qing.ChessPlayer;
 import com.vinson.qing.R;
+import com.vinson.qing.bean.BoardStatus;
 import com.vinson.qing.bean.Chess;
 import com.vinson.qing.bean.ChessInfo;
 import com.vinson.qing.utils.ChessUtils;
@@ -96,6 +97,10 @@ public class CheckerBoard extends ViewGroup {
 
         setChessList(chessInfos);
         initDragger();
+    }
+
+    public BoardStatus getBoardStatus() {
+        return chessPlayer.getBoardStatus();
     }
 
     private void initDragger() {

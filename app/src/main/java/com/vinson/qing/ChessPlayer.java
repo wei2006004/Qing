@@ -13,6 +13,10 @@ import java.util.List;
 
 public class ChessPlayer {
 
+    public BoardStatus getBoardStatus() {
+        return boardStatus;
+    }
+
     private BoardStatus boardStatus;
 
     public ChessPlayer() {

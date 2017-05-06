@@ -75,7 +75,9 @@ public class ChessPlayActivity extends BaseActivity {
     @OnClick(R.id.btn_change_player)
     void onChangePlayer() {
         try {
-            String string = ucciInteface.bestMove("hh", 2);
+            String fen = checkerBoard.getBoardStatus().toFenText();
+            L.d("fen:" , fen);
+            String string = ucciInteface.bestMove(fen, 2);
             L.d("bind", string);
         } catch (RemoteException e) {
             e.printStackTrace();
