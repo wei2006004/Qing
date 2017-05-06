@@ -2,6 +2,7 @@ package com.vinson.qing.play;
 
 import android.os.RemoteException;
 
+import com.vinson.qing.IMoveResultListener;
 import com.vinson.qing.IUcciInteface;
 import com.vinson.qing.bean.MoveResult;
 import com.vinson.qing.loader.ChessDataService;
@@ -23,22 +24,31 @@ public class UcciInterface extends IUcciInteface.Stub {
     ChessDataService service;
 
     @Override
-    public String bestMove(String fenText, int side) throws RemoteException {
+    public void bestMove(final String fenText, final int side, final IMoveResultListener listener) throws RemoteException {
         if (IS_LOCAL) {
             Qingd.setDepth(2);
-            return Qingd.bestMove(fenText, side);
+            listener.onSuccess(Qingd.bestMove(fenText, side));
         }
-        if (service == null) {
-            service = ServerConnect.getRetrofit().create(ChessDataService.class);
-        }
-        Call<MoveResult> resultCall = service.bestMove(fenText, side);
-        String ret = "";
-        try {
-            Response<MoveResult> response = resultCall.execute();
-            ret = response.body().getResult();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ret;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (service == null) {
+                    service = ServerConnect.getRetrofit().create(ChessDataService.class);
+                }
+                Call<MoveResult> resultCall = service.bestMove(fenText, side);
+                String ret = "";
+                try {
+                    Response<MoveResult> response = resultCall.execute();
+                    ret = response.body().getResult();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    listener.onSuccess(ret);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

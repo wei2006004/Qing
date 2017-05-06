@@ -78,8 +78,17 @@ public class ChessPlayActivity extends BaseActivity {
         try {
             String fen = checkerBoard.getBoardStatus().toFenText();
             L.d("fen:" , fen);
-            String string = ucciInteface.bestMove(fen, Contants.SIDE_BLACK);
-            L.d("bind", string);
+            ucciInteface.bestMove(fen, Contants.SIDE_BLACK, new IMoveResultListener.Stub() {
+
+                @Override
+                public void onSuccess(String result) throws RemoteException {
+                    L.d("bind", result);
+                }
+
+                @Override
+                public void onError(int error) throws RemoteException {
+                }
+            });
         } catch (RemoteException e) {
             e.printStackTrace();
         }
