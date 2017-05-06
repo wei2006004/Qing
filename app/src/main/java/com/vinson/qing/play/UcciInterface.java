@@ -3,6 +3,7 @@ package com.vinson.qing.play;
 import android.os.RemoteException;
 
 import com.vinson.qing.IUcciInteface;
+import com.vinson.qingd.Qingd;
 
 /**
  * Created by Vinson on 2017/5/6.
@@ -12,6 +13,7 @@ import com.vinson.qing.IUcciInteface;
 public class UcciInterface extends IUcciInteface.Stub{
     @Override
     public String bestMove(String fenText, int side) throws RemoteException {
-        return "hello";
+        Qingd.setDepth(2);
+        return Qingd.bestMove(fenText, side);
     }
 }

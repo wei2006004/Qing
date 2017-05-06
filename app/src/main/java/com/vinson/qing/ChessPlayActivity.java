@@ -19,6 +19,7 @@ import com.vinson.qing.utils.DbService;
 import com.vinson.qing.utils.L;
 import com.vinson.qing.utils.ObserverAdapter;
 import com.vinson.qing.widget.CheckerBoard;
+import com.vinson.qingd.Contants;
 
 import java.util.Date;
 
@@ -77,7 +78,7 @@ public class ChessPlayActivity extends BaseActivity {
         try {
             String fen = checkerBoard.getBoardStatus().toFenText();
             L.d("fen:" , fen);
-            String string = ucciInteface.bestMove(fen, 2);
+            String string = ucciInteface.bestMove(fen, Contants.SIDE_BLACK);
             L.d("bind", string);
         } catch (RemoteException e) {
             e.printStackTrace();
