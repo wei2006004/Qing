@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class ServerConnect {
-    public static final String BASE_URL = "http://10.60.104.14:8080/";
+    public static final String BASE_URL = "http://10.60.104.26:8080/";
 
     private static Retrofit retrofit;
 

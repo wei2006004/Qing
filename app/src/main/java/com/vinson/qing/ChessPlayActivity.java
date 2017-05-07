@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.RemoteException;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.vinson.qing.bean.Chess;
 import com.vinson.qing.bean.ChessData;
+import com.vinson.qing.bean.ChessTrack;
 import com.vinson.qing.utils.ChessUtils;
 import com.vinson.qing.utils.DbService;
 import com.vinson.qing.utils.L;
@@ -81,8 +84,15 @@ public class ChessPlayActivity extends BaseActivity {
             ucciInteface.bestMove(fen, Contants.SIDE_BLACK, new IMoveResultListener.Stub() {
 
                 @Override
-                public void onSuccess(String result) throws RemoteException {
-                    L.d("bind", result);
+                public void onSuccess(final String result) throws RemoteException {
+                    post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ChessTrack track = ChessUtils.moveResultToTask(result);
+                            checkerBoard.playChess(track.fromx, track.fromy, track.tox, track.toy);
+                            L.d("bind", result);
+                        }
+                    });
                 }
 
                 @Override
@@ -92,6 +102,10 @@ public class ChessPlayActivity extends BaseActivity {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    void post(Runnable runnable) {
+        new Handler(Looper.getMainLooper()).post(runnable);
     }
 
     @Override

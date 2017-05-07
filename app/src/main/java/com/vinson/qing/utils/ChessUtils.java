@@ -2,6 +2,7 @@ package com.vinson.qing.utils;
 
 import com.vinson.qing.bean.Chess;
 import com.vinson.qing.bean.ChessInfo;
+import com.vinson.qing.bean.ChessTrack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,5 +72,23 @@ public class ChessUtils {
         chessInfos.add(new ChessInfo(8, 6, Chess.BING_R));
 
         return chessInfos;
+    }
+
+    public static ChessTrack moveResultToTask(String result) {
+        String[] res = result.trim().split(":");
+        ChessTrack track = new ChessTrack();
+        track.fromx = getMoveX(res[0]);
+        track.fromy = getMoveY(res[0]);
+        track.tox = getMoveX(res[1]);
+        track.toy = getMoveY(res[1]);
+        return track;
+    }
+
+    private static int getMoveY(String re) {
+        return 9 - (re.charAt(1) - '0');
+    }
+
+    private static int getMoveX(String re) {
+        return re.charAt(0) - 'a';
     }
 }
