@@ -37,9 +37,6 @@ public class ChessPlayActivity extends BaseActivity {
     @BindView(R.id.checkerBoard)
     CheckerBoard checkerBoard;
 
-    @BindView(R.id.tv_player)
-    TextView playerText;
-
     ChessData chessData;
     IUcciInteface ucciInteface;
 
@@ -147,12 +144,8 @@ public class ChessPlayActivity extends BaseActivity {
 
     private void setPlayer(int currentPlayer) {
         if (currentPlayer == CheckerBoard.PLAYER_RED) {
-            playerText.setText("红方");
-            playerText.setTextColor(Color.RED);
             playerImage.setImageResource(R.drawable.r);
         } else {
-            playerText.setText("绿方");
-            playerText.setTextColor(Color.GREEN);
             playerImage.setImageResource(R.drawable.b);
         }
     }

@@ -5,9 +5,11 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_other">
 
     <com.vinson.qing.widget.CheckerBoard
+        android:layout_marginTop="60dp"
         android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,9 +17,11 @@
         app:initChess="true"
         app:moveEnable="false"
         android:id="@+id/checkerBoard"
-        android:background="@drawable/timg"/>
+        android:background="@drawable/bg_board"/>
 
     <LinearLayout
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

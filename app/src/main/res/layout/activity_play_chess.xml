@@ -5,24 +5,21 @@
     android:padding="10dp"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_player"
-        android:padding="5dp"/>
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_other">
 
     <com.vinson.qing.widget.CheckerBoard
+        android:layout_marginTop="60dp"
         android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:fixScale="true"
         app:initChess="true"
         android:id="@+id/checkerBoard"
-        android:background="@drawable/timg"/>
+        android:background="@drawable/bg_board"/>
 
     <LinearLayout
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
