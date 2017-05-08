@@ -15,7 +15,7 @@
         app:initChess="true"
         app:moveEnable="false"
         android:id="@+id/checkerBoard"
-        android:background="#cccccc"/>
+        android:background="@drawable/timg"/>
 
     <LinearLayout
         android:orientation="horizontal"
