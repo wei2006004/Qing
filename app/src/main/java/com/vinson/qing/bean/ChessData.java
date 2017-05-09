@@ -208,7 +208,7 @@ public class ChessData implements Parcelable {
         if (tracks == null) {
             tracks = new ArrayList<>();
         }
-        tracks.add(new ChessTrack(null, 0, fromx, fromy, tox, toy, currentIndex, chess));
+        tracks.add(new ChessTrack(0l, 0, fromx, fromy, tox, toy, currentIndex, chess));
         currentIndex++;
     }
 

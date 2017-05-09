@@ -1,10 +1,15 @@
 package com.vinson.qing.loader;
 
 import com.vinson.qing.bean.ChessData;
+import com.vinson.qing.bean.ChessTrack;
+import com.vinson.qing.utils.ChessUtils;
 import com.vinson.qing.utils.ObserverAdapter;
 import com.vinson.qing.utils.ServerConnect;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Retrofit;
@@ -26,13 +31,14 @@ public class ChessNetworkLoader extends Loader<ChessData> {
     @Override
     public void loadDatas() {
         ChessDataService service = ServerConnect.getRetrofit().create(ChessDataService.class);
-        Observable<List<ChessData>> observable = service.getChessList();
-        observable.map(new Func1<List<ChessData>, List<ChessData>>(){
+        Observable<List<ChessRecord>> observable = service.getChessList();
+        observable.map(new Func1<List<ChessRecord>, List<ChessData>>(){
             @Override
-            public List<ChessData> call(List<ChessData> list) {
+            public List<ChessData> call(List<ChessRecord> list) {
+                List<ChessData> datas = convertRecordToDatas(list);
                 chessDatas.clear();
-                chessDatas.addAll(list);
-                return list;
+                chessDatas.addAll(datas);
+                return datas;
             }
         }).subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -47,6 +53,35 @@ public class ChessNetworkLoader extends Loader<ChessData> {
                 notifyLoadDone(1, 0, chessDatas);
             }
         });
+    }
+
+    private List<ChessData> convertRecordToDatas(List<ChessRecord> list) {
+        List<ChessData> datas = new ArrayList<>();
+        for (ChessRecord record : list) {
+            ChessData data = new ChessData();
+            data.redPlayer = record.redPlayer;
+            data.greenPlayer = record.blackPlayer;
+            data.startTime = parseDate(record.date);
+            data.endTime = new Date();
+            data.id = 0l;
+            for (String string: record.getMoveList()) {
+                ChessTrack track = ChessUtils.moveResultToTask(string);
+                data.addTrack(null, track.fromx, track.fromy, track.tox, track.toy);
+            }
+            datas.add(data);
+        }
+        return datas;
+    }
+
+    static Date parseDate(String string) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        Date date = null;
+        try {
+            date = format.parse(string);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
     @Override

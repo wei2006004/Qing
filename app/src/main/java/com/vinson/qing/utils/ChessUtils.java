@@ -75,12 +75,11 @@ public class ChessUtils {
     }
 
     public static ChessTrack moveResultToTask(String result) {
-        String[] res = result.trim().split(":");
         ChessTrack track = new ChessTrack();
-        track.fromx = getMoveX(res[0]);
-        track.fromy = getMoveY(res[0]);
-        track.tox = getMoveX(res[1]);
-        track.toy = getMoveY(res[1]);
+        track.fromx = getMoveX(result.substring(0, 2));
+        track.fromy = getMoveY(result.substring(0, 2));
+        track.tox = getMoveX(result.substring(2, result.length()));
+        track.toy = getMoveY(result.substring(2, result.length()));
         return track;
     }
 

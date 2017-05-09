@@ -47,7 +47,7 @@ public class ManualViewHodler extends RecyclerView.ViewHolder {
         player1.setText(data.redPlayer);
         player2.setText(data.greenPlayer);
         time.setText(String.valueOf(data.startTime));
-        duration.setText(String.valueOf(data.endTime.getTime() - data.startTime.getTime()));
+//        duration.setText(String.valueOf(data.endTime.getTime() - data.startTime.getTime()));
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

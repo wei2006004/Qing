@@ -62,7 +62,7 @@ public class ChessTrack implements Parcelable{
         tox = in.readInt();
         toy = in.readInt();
         index = in.readInt();
-        chess = in.readParcelable(Chess.class.getClassLoader());
+//        chess = in.readParcelable(Chess.class.getClassLoader());
     }
 
     public static final Creator<ChessTrack> CREATOR = new Creator<ChessTrack>() {
@@ -155,6 +155,6 @@ public class ChessTrack implements Parcelable{
         dest.writeInt(tox);
         dest.writeInt(toy);
         dest.writeInt(index);
-        dest.writeParcelable(chess, flags);
+//        dest.writeParcelable(chess, flags);
     }
 }

@@ -190,6 +190,7 @@ public class CheckerBoard extends ViewGroup {
     }
 
     public void playChess(Chess chess, int fromx, int fromy, int tox, int toy) {
+        if (chess == null) chess = chessPlayer.getBoardStatus().get(fromx, fromy);
         if (!chessPlayer.verify(chess, fromx, fromy, tox, toy)) {
             return;
         }

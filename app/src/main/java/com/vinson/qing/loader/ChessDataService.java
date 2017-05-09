@@ -1,6 +1,5 @@
 package com.vinson.qing.loader;
 
-import com.vinson.qing.bean.ChessData;
 import com.vinson.qing.bean.MoveResult;
 
 import java.util.List;
@@ -17,7 +16,7 @@ import rx.Observable;
 public interface ChessDataService {
 
     @GET("/chess-list")
-    Observable<List<ChessData>> getChessList();
+    Observable<List<ChessRecord>> getChessList();
 
     @GET("/bestMove")
     Call<MoveResult> bestMove(@Query("fen") String fen, @Query("side") int side);
