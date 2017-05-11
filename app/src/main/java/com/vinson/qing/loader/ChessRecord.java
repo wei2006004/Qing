@@ -1,5 +1,6 @@
 package com.vinson.qing.loader;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,7 +17,15 @@ public class ChessRecord {
     int result;
     String fen;
     String ecco;
-    List<String> moveList;
+    String moves;
+
+    public String getMoves() {
+        return moves;
+    }
+
+    public void setMoves(String moves) {
+        this.moves = moves;
+    }
 
     public String getName() {
         return name;
@@ -91,10 +100,6 @@ public class ChessRecord {
     }
 
     public List<String> getMoveList() {
-        return moveList;
-    }
-
-    public void setMoveList(List<String> moveList) {
-        this.moveList = moveList;
+        return Arrays.asList(moves.split(":"));
     }
 }
