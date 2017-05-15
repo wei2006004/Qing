@@ -46,7 +46,7 @@ public abstract class ManualAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ManualViewHodler hodler = ManualViewHodler.createViewHodler(context);
+        ManualViewHodler hodler = ManualViewHodler.createViewHodler(context, parent);
         hodler.setActionListener(actionListener);
         return hodler;
     }

@@ -101,6 +101,24 @@ public class ChessManualActivity extends BaseActivity {
                 return view == object;
             }
         });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == PAGE_LOCAL) {
+                    appBar.setTitle("本地棋谱");
+                } else {
+                    appBar.setTitle("网络棋谱");
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
     @Override

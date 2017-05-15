@@ -2,7 +2,9 @@ package com.vinson.qing.manual;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.vinson.qing.R;
@@ -30,8 +32,6 @@ public class ManualViewHodler extends RecyclerView.ViewHolder {
     TextView player2;
     @BindView(R.id.time)
     TextView time;
-    @BindView(R.id.duration)
-    TextView duration;
 
     private ChessData chessData;
     private int position;
@@ -47,7 +47,6 @@ public class ManualViewHodler extends RecyclerView.ViewHolder {
         player1.setText(data.redPlayer);
         player2.setText(data.greenPlayer);
         time.setText(String.valueOf(data.startTime));
-//        duration.setText(String.valueOf(data.endTime.getTime() - data.startTime.getTime()));
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,8 +66,8 @@ public class ManualViewHodler extends RecyclerView.ViewHolder {
         });
     }
 
-    public static ManualViewHodler createViewHodler(Context context) {
-        return new ManualViewHodler(View.inflate(context, R.layout.layout_manual_item, null));
+    public static ManualViewHodler createViewHodler(Context context, ViewGroup parent) {
+        return new ManualViewHodler(LayoutInflater.from(context).inflate(R.layout.layout_manual_item, parent, false));
     }
 
     public ChessData getChessData() {
