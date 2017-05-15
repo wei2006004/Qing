@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 import com.vinson.qing.BaseActivity;
 import com.vinson.qing.R;
 import com.vinson.qing.bean.ChessData;
+import com.vinson.qing.widget.AppBar;
+
+import butterknife.BindView;
 
 public class ChessManualActivity extends BaseActivity {
 
@@ -22,12 +25,23 @@ public class ChessManualActivity extends BaseActivity {
     private ManualAdapter localAdapter;
     private ManualAdapter networkAdapter;
 
+    @BindView(R.id.appbar)
+    AppBar appBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         initAdapter();
         initViewPager();
+
+        appBar.setOnBackClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        appBar.setTitle("棋谱");
     }
 
     private void initAdapter() {
