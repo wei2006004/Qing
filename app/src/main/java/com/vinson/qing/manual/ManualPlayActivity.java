@@ -3,12 +3,14 @@ package com.vinson.qing.manual;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import com.vinson.qing.BaseActivity;
 import com.vinson.qing.R;
 import com.vinson.qing.bean.ChessData;
 import com.vinson.qing.bean.ChessTrack;
+import com.vinson.qing.widget.AppBar;
 import com.vinson.qing.widget.CheckerBoard;
 
 import butterknife.BindView;
@@ -28,6 +30,9 @@ public class ManualPlayActivity extends BaseActivity {
     @BindView(R.id.btn_next)
     Button nextBtn;
 
+    @BindView(R.id.appbar)
+    AppBar appBar;
+
     private static final String EXTRA_CHESS_DATA = "EXTRA_CHESS_DATA";
 
     public static void startActivity(Context context, ChessData chessData) {
@@ -42,6 +47,13 @@ public class ManualPlayActivity extends BaseActivity {
 
         chessData = getIntent().getParcelableExtra(EXTRA_CHESS_DATA);
         backBtn.setEnabled(false);
+        appBar.setOnBackClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        appBar.setTitle("棋谱");
     }
 
     @OnClick(R.id.btn_back)

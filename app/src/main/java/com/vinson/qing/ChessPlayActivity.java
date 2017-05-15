@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.vinson.qing.utils.ChessUtils;
 import com.vinson.qing.utils.DbService;
 import com.vinson.qing.utils.L;
 import com.vinson.qing.utils.ObserverAdapter;
+import com.vinson.qing.widget.AppBar;
 import com.vinson.qing.widget.CheckerBoard;
 import com.vinson.qingd.Contants;
 
@@ -36,6 +38,9 @@ public class ChessPlayActivity extends BaseActivity {
 
     @BindView(R.id.checkerBoard)
     CheckerBoard checkerBoard;
+
+    @BindView(R.id.appbar)
+    AppBar appBar;
 
     ChessData chessData;
     IUcciInteface ucciInteface;
@@ -133,6 +138,14 @@ public class ChessPlayActivity extends BaseActivity {
             }
         });
         setPlayer(checkerBoard.getCurrentPlayer());
+
+        appBar.setOnBackClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        appBar.setTitle("对弈");
     }
 
     private void initData() {

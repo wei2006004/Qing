@@ -2,55 +2,71 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
-    android:padding="10dp"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_other">
 
+    <com.vinson.qing.widget.AppBar
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <com.vinson.qing.widget.CheckerBoard
-        android:layout_marginTop="60dp"
-        android:padding="5dp"
+        android:padding="8dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:fixScale="true"
         app:initChess="true"
-        android:id="@+id/checkerBoard"
-        android:background="@drawable/bg_board"/>
+        android:id="@+id/checkerBoard"/>
 
     <LinearLayout
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" >
+            <ImageView
+                android:layout_gravity="right|center_vertical"
+                android:id="@+id/image_player"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+        </FrameLayout>
 
-        <ImageView
-            android:layout_gravity="center"
-            android:id="@+id/image_player"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
 
         <Button
             android:id="@+id/btn_reset"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="新局"/>
 
         <Button
             android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="悔棋"/>
 
         <Button
             android:id="@+id/btn_change_player"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="调换"/>
 
         <Button
             android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="保存"/>
     </LinearLayout>
