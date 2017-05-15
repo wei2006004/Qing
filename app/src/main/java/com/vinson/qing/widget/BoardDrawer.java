@@ -30,11 +30,11 @@ public class BoardDrawer {
     private void initPaint() {
         linePaint = new Paint();
         linePaint.setColor(Color.BLACK);
-        linePaint.setStrokeWidth(2);
+        linePaint.setStrokeWidth(3);
         widthPaint = new Paint();
         widthPaint.setStyle(Paint.Style.STROKE);
         widthPaint.setColor(Color.BLACK);
-        widthPaint.setStrokeWidth(5);
+        widthPaint.setStrokeWidth(6);
     }
 
     public void drawBoard(Canvas canvas) {

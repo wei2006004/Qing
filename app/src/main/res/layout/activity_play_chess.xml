@@ -46,6 +46,10 @@
             android:id="@+id/btn_reset"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@drawable/bg_btn_base"
+            android:layout_marginRight="5dp"
             android:layout_height="wrap_content"
             android:text="新局"/>
 
@@ -53,6 +57,10 @@
             android:id="@+id/btn_back"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@drawable/bg_btn_base"
+            android:layout_marginRight="5dp"
             android:layout_height="wrap_content"
             android:text="悔棋"/>
 
@@ -60,6 +68,10 @@
             android:id="@+id/btn_change_player"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@drawable/bg_btn_base"
+            android:layout_marginRight="5dp"
             android:layout_height="wrap_content"
             android:text="调换"/>
 
@@ -67,6 +79,9 @@
             android:id="@+id/btn_save"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@drawable/bg_btn_base"
             android:layout_height="wrap_content"
             android:text="保存"/>
     </LinearLayout>

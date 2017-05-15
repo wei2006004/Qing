@@ -47,11 +47,18 @@
             android:id="@+id/btn_next"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@drawable/bg_btn_base"
+            android:layout_marginRight="8dp"
             android:layout_height="wrap_content"
             android:text="下一步"/>
 
         <Button
             android:id="@+id/btn_back"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@drawable/bg_btn_base"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
