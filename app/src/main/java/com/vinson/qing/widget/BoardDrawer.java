@@ -21,6 +21,7 @@ public class BoardDrawer {
     int starty;
 
     private Paint linePaint;
+    private Paint widthPaint;
 
     public BoardDrawer() {
         initPaint();
@@ -30,11 +31,20 @@ public class BoardDrawer {
         linePaint = new Paint();
         linePaint.setColor(Color.BLACK);
         linePaint.setStrokeWidth(2);
+        widthPaint = new Paint();
+        widthPaint.setStyle(Paint.Style.STROKE);
+        widthPaint.setColor(Color.BLACK);
+        widthPaint.setStrokeWidth(5);
     }
 
     public void drawBoard(Canvas canvas) {
+        drawRect(canvas);
         drawBoardLines(canvas);
         drawAnnotations(canvas);
+    }
+
+    private void drawRect(Canvas canvas) {
+        canvas.drawRect(startx - 11, starty - 11, startx + 11 + boardWidth, starty + 11 + boardHeight, widthPaint);
     }
 
     private void drawAnnotations(Canvas canvas) {
